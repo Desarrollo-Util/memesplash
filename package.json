@@ -4,7 +4,8 @@
     "main": "index.js",
     "type": "module",
     "scripts": {
-        "dev": "nodemon src/index.js"
+        "dev": "nodemon src/index.js",
+        "test": "ava"
     },
     "author": "Desarrollo Útil",
     "license": "ISC",
@@ -15,7 +16,12 @@
         "eslint-plugin-import": "2.26.0",
         "eslint-plugin-n": "15.2.0",
         "eslint-plugin-promise": "6.0.0",
+        "node-fetch": "3.2.4",
         "nodemon": "2.0.16",
         "prettier": "2.6.2"
+    },
+    "dependencies": {
+        "ava": "4.2.0",
+        "dotenv": "16.0.1"
     }
 }
