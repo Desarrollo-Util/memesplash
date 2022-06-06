@@ -1,7 +1,7 @@
-import { UserModel } from '../../domain/models/user.model';
-import { UserRepository } from '../../infrastructure/repositories/user.repository';
-import { UserEmailAlreadyInUseException } from '../errors/invalid-email-format.exception';
-import { UserIdAlreadyInUseException } from '../errors/invalid-id-format.exception';
+import { UserModel } from '../../domain/models/user.model.js';
+import { UserRepository } from '../../infrastructure/repositories/user.repository.js';
+import { UserEmailAlreadyInUseException } from '../errors/user-email-already-in-use.exception.js';
+import { UserIdAlreadyInUseException } from '../errors/user-id-already-in-use.exception.js';
 
 export const userRegisterUseCase = async (id, name, email, password) => {
     const newUser = await UserModel.create(id, name, email, password);

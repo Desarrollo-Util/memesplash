@@ -1,4 +1,4 @@
-import { DomainFormatException } from './domain-format.exception';
+import { DomainFormatException } from './domain-format.exception.js';
 
 export class InvalidNameFormatException extends DomainFormatException {
     constructor() {

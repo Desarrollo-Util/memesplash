@@ -42,8 +42,9 @@ test('Register succesfully', async (t) => {
 
     const response = await fetchRegister(t, VALID_USER_1);
 
-    t.is(response.status, EXPECTED_STATUS_CODE);
-    t.fail(
+    t.is(
+        response.status,
+        EXPECTED_STATUS_CODE,
         `Expected status code ${EXPECTED_STATUS_CODE}, but received ${response.status}`
     );
 });
@@ -58,8 +59,9 @@ test('Register failed - Invalid ID format', async (t) => {
 
     const response = await fetchRegister(t, user);
 
-    t.is(response.status, EXPECTED_STATUS_CODE);
-    t.fail(
+    t.is(
+        response.status,
+        EXPECTED_STATUS_CODE,
         `Expected status code ${EXPECTED_STATUS_CODE}, but received ${response.status}`
     );
 });
@@ -74,8 +76,9 @@ test('Register failed - Invalid name format', async (t) => {
 
     const response = await fetchRegister(t, user);
 
-    t.is(response.status, EXPECTED_STATUS_CODE);
-    t.fail(
+    t.is(
+        response.status,
+        EXPECTED_STATUS_CODE,
         `Expected status code ${EXPECTED_STATUS_CODE}, but received ${response.status}`
     );
 });
@@ -90,8 +93,9 @@ test('Register failed - Invalid email format', async (t) => {
 
     const response = await fetchRegister(t, user);
 
-    t.is(response.status, EXPECTED_STATUS_CODE);
-    t.fail(
+    t.is(
+        response.status,
+        EXPECTED_STATUS_CODE,
         `Expected status code ${EXPECTED_STATUS_CODE}, but received ${response.status}`
     );
 });
@@ -106,8 +110,9 @@ test('Register failed - Invalid password format', async (t) => {
 
     const response = await fetchRegister(t, user);
 
-    t.is(response.status, EXPECTED_STATUS_CODE);
-    t.fail(
+    t.is(
+        response.status,
+        EXPECTED_STATUS_CODE,
         `Expected status code ${EXPECTED_STATUS_CODE}, but received ${response.status}`
     );
 });
@@ -124,8 +129,9 @@ test('Register failed - Missing fields', async (t) => {
 
     const response = await fetchRegister(t, user);
 
-    t.is(response.status, EXPECTED_STATUS_CODE);
-    t.fail(
+    t.is(
+        response.status,
+        EXPECTED_STATUS_CODE,
         `Expected status code ${EXPECTED_STATUS_CODE}, but received ${response.status}`
     );
 });
@@ -140,8 +146,9 @@ test('Register failed - Unnecesary fields', async (t) => {
 
     const response = await fetchRegister(t, user);
 
-    t.is(response.status, EXPECTED_STATUS_CODE);
-    t.fail(
+    t.is(
+        response.status,
+        EXPECTED_STATUS_CODE,
         `Expected status code ${EXPECTED_STATUS_CODE}, but received ${response.status}`
     );
 });
@@ -156,8 +163,9 @@ test('Register failed - Duplicated ID', async (t) => {
 
     const response = await fetchRegister(t, user);
 
-    t.is(response.status, EXPECTED_STATUS_CODE);
-    t.fail(
+    t.is(
+        response.status,
+        EXPECTED_STATUS_CODE,
         `Expected status code ${EXPECTED_STATUS_CODE}, but received ${response.status}`
     );
 });
@@ -172,10 +180,9 @@ test('Register failed - Duplicated email', async (t) => {
 
     const response = await fetchRegister(t, user);
 
-    t.is(response.status, EXPECTED_STATUS_CODE);
-    t.fail(
+    t.is(
+        response.status,
+        EXPECTED_STATUS_CODE,
         `Expected status code ${EXPECTED_STATUS_CODE}, but received ${response.status}`
     );
 });
-
-test.after(() => {});

@@ -1,4 +1,4 @@
-import { ApplicationConflictException } from './application-conflict.exception';
+import { ApplicationConflictException } from './application-conflict.exception.js';
 
 export class UserIdAlreadyInUseException extends ApplicationConflictException {
     constructor() {

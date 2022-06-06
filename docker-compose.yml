@@ -1,0 +1,62 @@
+version: '3.7'
+services:
+  mongodb:
+    container_name: mongodb_dev
+    image: docker.io/bitnami/mongodb:latest
+    restart: always
+    environment:
+      MONGODB_ADVERTISED_HOSTNAME: ${MONGODB_HOSTNAME:-localhost}
+      MONGODB_REPLICA_SET_MODE: primary
+      MONGODB_ROOT_PASSWORD: ${MONGODB_PASSWORD:-admin}
+      MONGODB_REPLICA_SET_KEY: replicasetkey123
+      MONGODB_REPLICA_SET_NAME: memesplash
+    ports:
+      - ${MONGODB_PORT:-27017}:27017
+    volumes:
+      - mongodb_data:/bitnami/mongodb
+
+  mongoexpress:
+    container_name: mongoexpress_dev
+    image: mongo-express:0.54.0
+    restart: always
+    environment:
+      ME_CONFIG_BASICAUTH_USERNAME: root
+      ME_CONFIG_BASICAUTH_PASSWORD: admin
+      ME_CONFIG_MONGODB_SERVER: mongodb_dev
+      ME_CONFIG_MONGODB_ADMINUSERNAME: ${MONGODB_USER:-root}
+      ME_CONFIG_MONGODB_ADMINPASSWORD: ${MONGODB_PASSWORD:-admin}
+    ports:
+      - 8081:8081
+    depends_on:
+      - mongodb
+
+  # postgresql:
+  #   container_name: postgresql_dev
+  #   image: postgres:alpine
+  #   restart: always
+  #   environment:
+  #     POSTGRES_USER: ${POSTGRESQL_USER:-root}
+  #     POSTGRES_PASSWORD: ${POSTGRESQL_PASSWORD:-admin}
+  #   ports:
+  #     - ${POSTGRESQL_PORT:-5432}:5432
+  #   volumes:
+  #     - postgresql_data:/var/lib/postgresql/data
+
+  # pgadmin:
+  #   container_name: pgadmin4_dev
+  #   image: dpage/pgadmin4:latest
+  #   restart: always
+  #   environment:
+  #     PGADMIN_DEFAULT_EMAIL: admin@admin.com
+  #     PGADMIN_DEFAULT_PASSWORD: root
+  #   ports:
+  #     - "8082:80"
+  #   depends_on:
+  #     - postgresql
+  #   volumes:
+  #     - pgadmin_data:/var/lib/pgadmin
+    
+volumes:
+  # postgresql_data:
+  mongodb_data: 
+  # pgadmin_data:
