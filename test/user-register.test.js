@@ -1,6 +1,8 @@
 import test from 'ava';
 import { config } from 'dotenv';
+import { MongoMemoryReplSet } from 'mongodb-memory-server';
 import fetch from 'node-fetch';
+import { bootstrap } from '../src/bootstrap.js';
 
 config();
 const endpoint = `http://localhost:${process.env.PORT}/register`;
@@ -19,6 +21,21 @@ const VALID_USER_2 = {
     password: 'test1234',
 };
 
+let mongo;
+
+test.before(async () => {
+    mongo = await MongoMemoryReplSet.create({
+        replSet: {
+            count: 1,
+            dbName: 'memesplash',
+        },
+    });
+
+    process.env.MONGODB_URI = mongo.getUri();
+
+    await bootstrap();
+});
+
 const fetchRegister = async (t, user) => {
     try {
         const response = await fetch(endpoint, {
@@ -35,12 +52,44 @@ const fetchRegister = async (t, user) => {
     }
 };
 
-test.before(() => {});
-
-test('Register succesfully', async (t) => {
+test.serial('Register succesfully', async (t) => {
     const EXPECTED_STATUS_CODE = 201;
 
     const response = await fetchRegister(t, VALID_USER_1);
+
+    t.is(
+        response.status,
+        EXPECTED_STATUS_CODE,
+        `Expected status code ${EXPECTED_STATUS_CODE}, but received ${response.status}`
+    );
+});
+
+test.serial('Register failed - Duplicated ID', async (t) => {
+    const EXPECTED_STATUS_CODE = 409;
+
+    const user = {
+        ...VALID_USER_2,
+        id: VALID_USER_1.id,
+    };
+
+    const response = await fetchRegister(t, user);
+
+    t.is(
+        response.status,
+        EXPECTED_STATUS_CODE,
+        `Expected status code ${EXPECTED_STATUS_CODE}, but received ${response.status}`
+    );
+});
+
+test.serial('Register failed - Duplicated email', async (t) => {
+    const EXPECTED_STATUS_CODE = 409;
+
+    const user = {
+        ...VALID_USER_2,
+        email: VALID_USER_1.email,
+    };
+
+    const response = await fetchRegister(t, user);
 
     t.is(
         response.status,
@@ -153,36 +202,6 @@ test('Register failed - Unnecesary fields', async (t) => {
     );
 });
 
-test('Register failed - Duplicated ID', async (t) => {
-    const EXPECTED_STATUS_CODE = 409;
-
-    const user = {
-        ...VALID_USER_2,
-        id: VALID_USER_1.id,
-    };
-
-    const response = await fetchRegister(t, user);
-
-    t.is(
-        response.status,
-        EXPECTED_STATUS_CODE,
-        `Expected status code ${EXPECTED_STATUS_CODE}, but received ${response.status}`
-    );
-});
-
-test('Register failed - Duplicated email', async (t) => {
-    const EXPECTED_STATUS_CODE = 409;
-
-    const user = {
-        ...VALID_USER_2,
-        email: VALID_USER_1.email,
-    };
-
-    const response = await fetchRegister(t, user);
-
-    t.is(
-        response.status,
-        EXPECTED_STATUS_CODE,
-        `Expected status code ${EXPECTED_STATUS_CODE}, but received ${response.status}`
-    );
+test.after(async () => {
+    if (mongo) await mongo.stop();
 });
