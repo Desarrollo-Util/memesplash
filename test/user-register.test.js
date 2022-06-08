@@ -1,49 +1,20 @@
 import test from 'ava';
-import { config } from 'dotenv';
-import { MongoMemoryReplSet } from 'mongodb-memory-server';
-import fetch from 'node-fetch';
-import { bootstrap } from '../src/bootstrap.js';
+import got from 'got';
+import generateRandomUser from './utils/genegenerate-random-user.js';
+import { expectStatusCode } from './utils/generic-expects.js';
+import { setupTests } from './utils/setup-tests.js';
 
-config();
+setupTests(test);
+
 const endpoint = `http://localhost:${process.env.PORT}/register`;
-
-const VALID_USER_1 = {
-    id: '7c51a7b8-be68-4d89-bad2-e77ebde08329',
-    name: 'Testing',
-    email: 'test@test.com',
-    password: 'test1234',
-};
-
-const VALID_USER_2 = {
-    id: '5d9516b7-cec9-49da-b565-699cf6d3969e',
-    name: 'Testing alt',
-    email: 'testalt@test.com',
-    password: 'test1234',
-};
-
-let mongo;
-
-test.before(async () => {
-    mongo = await MongoMemoryReplSet.create({
-        replSet: {
-            count: 1,
-            dbName: 'memesplash',
-        },
-    });
-
-    process.env.MONGODB_URI = mongo.getUri();
-
-    await bootstrap();
-});
+const testUserA = generateRandomUser();
+const testUserB = generateRandomUser();
 
 const fetchRegister = async (t, user) => {
     try {
-        const response = await fetch(endpoint, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(user),
+        const response = await got.post(endpoint, {
+            json: user,
+            throwHttpErrors: false,
         });
 
         return response;
@@ -53,155 +24,94 @@ const fetchRegister = async (t, user) => {
 };
 
 test.serial('Register succesfully', async (t) => {
-    const EXPECTED_STATUS_CODE = 201;
+    const response = await fetchRegister(t, testUserA);
 
-    const response = await fetchRegister(t, VALID_USER_1);
-
-    t.is(
-        response.status,
-        EXPECTED_STATUS_CODE,
-        `Expected status code ${EXPECTED_STATUS_CODE}, but received ${response.status}`
-    );
+    expectStatusCode(t, 201, response);
 });
 
 test.serial('Register failed - Duplicated ID', async (t) => {
-    const EXPECTED_STATUS_CODE = 409;
-
     const user = {
-        ...VALID_USER_2,
-        id: VALID_USER_1.id,
+        ...testUserB,
+        id: testUserA.id,
     };
 
     const response = await fetchRegister(t, user);
 
-    t.is(
-        response.status,
-        EXPECTED_STATUS_CODE,
-        `Expected status code ${EXPECTED_STATUS_CODE}, but received ${response.status}`
-    );
+    expectStatusCode(t, 409, response);
 });
 
 test.serial('Register failed - Duplicated email', async (t) => {
-    const EXPECTED_STATUS_CODE = 409;
-
     const user = {
-        ...VALID_USER_2,
-        email: VALID_USER_1.email,
+        ...testUserB,
+        email: testUserA.email,
     };
 
     const response = await fetchRegister(t, user);
 
-    t.is(
-        response.status,
-        EXPECTED_STATUS_CODE,
-        `Expected status code ${EXPECTED_STATUS_CODE}, but received ${response.status}`
-    );
+    expectStatusCode(t, 409, response);
 });
 
 test('Register failed - Invalid ID format', async (t) => {
-    const EXPECTED_STATUS_CODE = 400;
-
     const user = {
-        ...VALID_USER_1,
+        ...testUserA,
         id: 'invalid-uuid',
     };
 
     const response = await fetchRegister(t, user);
 
-    t.is(
-        response.status,
-        EXPECTED_STATUS_CODE,
-        `Expected status code ${EXPECTED_STATUS_CODE}, but received ${response.status}`
-    );
+    expectStatusCode(t, 400, response);
 });
 
 test('Register failed - Invalid name format', async (t) => {
-    const EXPECTED_STATUS_CODE = 400;
-
     const user = {
-        ...VALID_USER_1,
+        ...testUserA,
         name: 'name-with-./*',
     };
 
     const response = await fetchRegister(t, user);
 
-    t.is(
-        response.status,
-        EXPECTED_STATUS_CODE,
-        `Expected status code ${EXPECTED_STATUS_CODE}, but received ${response.status}`
-    );
+    expectStatusCode(t, 400, response);
 });
 
 test('Register failed - Invalid email format', async (t) => {
-    const EXPECTED_STATUS_CODE = 400;
-
     const user = {
-        ...VALID_USER_1,
+        ...testUserA,
         email: 'emailatemail.com',
     };
 
     const response = await fetchRegister(t, user);
 
-    t.is(
-        response.status,
-        EXPECTED_STATUS_CODE,
-        `Expected status code ${EXPECTED_STATUS_CODE}, but received ${response.status}`
-    );
+    expectStatusCode(t, 400, response);
 });
 
 test('Register failed - Invalid password format', async (t) => {
-    const EXPECTED_STATUS_CODE = 400;
-
     const user = {
-        ...VALID_USER_1,
+        ...testUserA,
         password: '1234',
     };
 
     const response = await fetchRegister(t, user);
 
-    t.is(
-        response.status,
-        EXPECTED_STATUS_CODE,
-        `Expected status code ${EXPECTED_STATUS_CODE}, but received ${response.status}`
-    );
+    expectStatusCode(t, 400, response);
 });
 
 test('Register failed - Missing fields', async (t) => {
-    const EXPECTED_STATUS_CODE = 400;
+    const { id, name, email } = testUserA;
 
-    const user = {
-        id: VALID_USER_1.id,
-        name: VALID_USER_1.name,
-        email: VALID_USER_1.email,
-        // Missing password
-    };
+    const user = { id, name, email };
 
     const response = await fetchRegister(t, user);
 
-    t.is(
-        response.status,
-        EXPECTED_STATUS_CODE,
-        `Expected status code ${EXPECTED_STATUS_CODE}, but received ${response.status}`
-    );
+    expectStatusCode(t, 400, response);
 });
 
 test('Register failed - Unnecesary fields', async (t) => {
-    const EXPECTED_STATUS_CODE = 400;
-
     const user = {
-        ...VALID_USER_1,
+        ...testUserA,
         age: 25,
     };
 
     const response = await fetchRegister(t, user);
 
-    t.is(
-        response.status,
-        EXPECTED_STATUS_CODE,
-        `Expected status code ${EXPECTED_STATUS_CODE}, but received ${response.status}`
-    );
-});
-
-test.after(async () => {
-    if (mongo) await mongo.stop();
+    expectStatusCode(t, 400, response);
 });

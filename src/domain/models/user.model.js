@@ -35,7 +35,7 @@ export class UserModel {
 
     static validateName(name) {
         const nameRegex =
-            /^(?![\s-])(?!.*[\s-]{2})(?!.*[\s-]$)[A-Z\s-]{2,30}$/i;
+            /^(?![\s-'])(?!.*[\s-']{2})(?!.*[\s-']$)[A-ZÀ-ÖØ-öø-ÿ\s-']{2,30}$/i;
 
         return nameRegex.test(name);
     }

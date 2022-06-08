@@ -5,7 +5,7 @@
     "type": "module",
     "scripts": {
         "dev": "nodemon src/index.js",
-        "test": "ava",
+        "test": "ava ./test/**/*.test.js",
         "docker:up": "docker-compose -p memesplash up -d",
         "docker:down": "docker-compose -p memesplash down",
         "docker:down-volumes": "docker-compose -p memesplash down -v"
@@ -13,6 +13,7 @@
     "author": "Desarrollo Útil",
     "license": "ISC",
     "devDependencies": {
+        "@ngneat/falso": "5.7.0",
         "ava": "4.2.0",
         "eslint": "8.16.0",
         "eslint-config-prettier": "8.5.0",
@@ -20,6 +21,7 @@
         "eslint-plugin-import": "2.26.0",
         "eslint-plugin-n": "15.2.0",
         "eslint-plugin-promise": "6.0.0",
+        "got": "12.1.0",
         "mongodb-memory-server": "8.6.0",
         "node-fetch": "3.2.4",
         "nodemon": "2.0.16",
