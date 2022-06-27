@@ -1,6 +1,6 @@
 import test from 'ava';
 import got from 'got';
-import generateRandomUser from './utils/genegenerate-random-user.js';
+import { generateRandomUser } from './utils/generate-random-user.js';
 import { expectStatusCode } from './utils/generic-expects.js';
 import { setupTests } from './utils/setup-tests.js';
 

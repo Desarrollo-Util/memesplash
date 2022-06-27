@@ -13,26 +13,26 @@
     "author": "Desarrollo Útil",
     "license": "ISC",
     "devDependencies": {
-        "@ngneat/falso": "5.7.0",
-        "ava": "4.2.0",
-        "eslint": "8.16.0",
+        "@ngneat/falso": "6.0.0",
+        "ava": "4.3.0",
+        "eslint": "8.18.0",
         "eslint-config-prettier": "8.5.0",
         "eslint-config-standard": "17.0.0",
         "eslint-plugin-import": "2.26.0",
-        "eslint-plugin-n": "15.2.0",
+        "eslint-plugin-n": "15.2.3",
         "eslint-plugin-promise": "6.0.0",
         "got": "12.1.0",
-        "mongodb-memory-server": "8.6.0",
-        "node-fetch": "3.2.4",
-        "nodemon": "2.0.16",
-        "prettier": "2.6.2"
+        "mongodb-memory-server": "8.7.1",
+        "node-fetch": "3.2.6",
+        "nodemon": "2.0.18",
+        "prettier": "2.7.1"
     },
     "dependencies": {
         "bcrypt": "5.0.1",
         "cors": "2.8.5",
         "dotenv": "16.0.1",
         "express": "4.18.1",
-        "mongoose": "6.3.5",
+        "mongoose": "6.4.0",
         "uuid-random": "1.3.2"
     }
 }
