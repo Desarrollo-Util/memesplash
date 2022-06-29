@@ -18,5 +18,6 @@ export const errorMiddleware = (error, _, res, __) => {
     if (error instanceof ApplicationConflictException)
         return res.status(409).send(error.message);
 
+    console.log(error);
     return res.status(500).send('Error interno del servidor');
 };

@@ -10,7 +10,7 @@ export class UserRepository {
      * @param {*} persistanceUser Database user
      * @returns Domain user
      */
-    static toDomain(persistanceUser) {
+    toDomain(persistanceUser) {
         const { _id, email, name, password, profilePic, images } =
             persistanceUser;
 
@@ -22,7 +22,7 @@ export class UserRepository {
      * @param {UserModel} domainUser Domain user
      * @returns Database user
      */
-    static toPersistance(domainUser) {
+    toPersistance(domainUser) {
         const { id, name, email, password, profilePic, images } = domainUser;
 
         return {
@@ -40,12 +40,12 @@ export class UserRepository {
      * @param {String} id User id
      * @returns Domain user
      */
-    static async findById(id) {
+    async findById(id) {
         const userFound = await UserSchema.findById(id).exec();
 
         if (!userFound) return null;
 
-        return UserRepository.toDomain(userFound);
+        return this.toDomain(userFound);
     }
 
     /**
@@ -53,20 +53,20 @@ export class UserRepository {
      * @param {String} email User email
      * @returns Domain user
      */
-    static async findByEmail(email) {
+    async findByEmail(email) {
         const userFound = await UserSchema.findOne({ email }).exec();
 
         if (!userFound) return null;
 
-        return UserRepository.toDomain(userFound);
+        return this.toDomain(userFound);
     }
 
     /**
      * Persists a new user
      * @param {UserModel} domainUser Domain user
      */
-    static async create(domainUser) {
-        const persistanceUser = UserRepository.toPersistance(domainUser);
+    async create(domainUser) {
+        const persistanceUser = this.toPersistance(domainUser);
 
         const user = new UserSchema(persistanceUser);
 
