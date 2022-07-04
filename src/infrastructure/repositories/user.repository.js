@@ -1,4 +1,8 @@
 import { UserModel } from '../../domain/models/user.model.js';
+import { EmailVO } from '../../domain/value-objects/email.vo.js';
+import { NameVO } from '../../domain/value-objects/name.vo.js';
+import { PasswordVO } from '../../domain/value-objects/password.vo.js';
+import { UuidVO } from '../../domain/value-objects/uuid.vo.js';
 import { UserSchema } from '../schemas/user.schema.js';
 
 /**
@@ -14,7 +18,14 @@ export class UserRepository {
         const { _id, email, name, password, profilePic, images } =
             persistanceUser;
 
-        return new UserModel(_id, name, email, password, profilePic, images);
+        return new UserModel(
+            new UuidVO(_id),
+            new NameVO(name),
+            new EmailVO(email),
+            new PasswordVO(password),
+            profilePic,
+            images
+        );
     }
 
     /**
@@ -26,10 +37,10 @@ export class UserRepository {
         const { id, name, email, password, profilePic, images } = domainUser;
 
         return {
-            _id: id,
-            name,
-            email,
-            password,
+            _id: id.value,
+            name: name.value,
+            email: email.value,
+            password: password.value,
             profilePic,
             images,
         };
@@ -41,7 +52,7 @@ export class UserRepository {
      * @returns Domain user
      */
     async findById(id) {
-        const userFound = await UserSchema.findById(id).exec();
+        const userFound = await UserSchema.findById(id.value).exec();
 
         if (!userFound) return null;
 
@@ -54,7 +65,9 @@ export class UserRepository {
      * @returns Domain user
      */
     async findByEmail(email) {
-        const userFound = await UserSchema.findOne({ email }).exec();
+        const userFound = await UserSchema.findOne({
+            email: email.value,
+        }).exec();
 
         if (!userFound) return null;
 

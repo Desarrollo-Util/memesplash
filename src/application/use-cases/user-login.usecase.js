@@ -1,4 +1,6 @@
-import { compare } from 'bcrypt';
+import { VOFormatException } from '../../domain/errors/vo-format.exception.js';
+import { EmailVO } from '../../domain/value-objects/email.vo.js';
+import { PlainPasswordVO } from '../../domain/value-objects/plain-password.vo.js';
 import { InvalidLoginException } from '../errors/invalid-login.exception.js';
 
 export class UserLoginUseCase {
@@ -7,19 +9,38 @@ export class UserLoginUseCase {
     }
 
     async execute(email, password) {
-        // Comprobar si existe el usuario por email
-        const existingUser = await this.userRepository.findByEmail(email);
-        if (!existingUser) {
-            throw new InvalidLoginException();
-        }
+        try {
+            const userEmail = new EmailVO(email);
+            const userPassword = new PlainPasswordVO(password);
 
-        // Comprobar si la password coincide
-        const didPasswordMatch = await compare(password, existingUser.password);
-        if (!didPasswordMatch) {
-            throw new InvalidLoginException();
-        }
+            // Comprobar si existe el usuario por email
+            const existingUser = await this.userRepository.findByEmail(
+                userEmail
+            );
+            if (!existingUser) {
+                throw new InvalidLoginException();
+            }
 
-        // Devolver el ID del usuario existente
-        return existingUser.id;
+            // Comprobar si la password coincide
+            const didPasswordMatch = await existingUser.password.compare(
+                userPassword
+            );
+
+            if (!didPasswordMatch) {
+                throw new InvalidLoginException();
+            }
+
+            // Devolver el ID del usuario existente
+            return existingUser.id;
+        } catch (err) {
+            // Si hay un error de formato de VO, es porque el email/contraseña
+            // no tienen el formato adecuado, por lo que se considera login inválido
+            if (err instanceof VOFormatException)
+                throw new InvalidLoginException();
+
+            // Si el error es otro, lo lanzamos hacia arriba para que se trate
+            // en el lugar adecuado, igual que el resto de casos de uso
+            throw err;
+        }
     }
 }
