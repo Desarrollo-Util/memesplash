@@ -20,7 +20,7 @@ export const setupTests = (test) => {
         await bootstrap();
     });
 
-    test.after(async () => {
-        if (mongo) await mongo.stop();
+    test.after.always(async () => {
+        if (mongo) await mongo.stop(true);
     });
 };
