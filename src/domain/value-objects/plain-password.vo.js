@@ -1,5 +1,5 @@
 import { VOFormatException } from '../errors/vo-format.exception.js';
-import { ValueObject } from '../value-object.js';
+import { ValueObject } from './value-object.js';
 
 export class PlainPasswordVO extends ValueObject {
     equals(valueObject) {

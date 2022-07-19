@@ -1,6 +1,6 @@
 import { compare, hash } from 'bcrypt';
 import { VOFormatException } from '../errors/vo-format.exception.js';
-import { ValueObject } from '../value-object.js';
+import { ValueObject } from './value-object.js';
 
 const HASH_SALT = 10;
 

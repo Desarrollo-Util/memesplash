@@ -1,6 +1,6 @@
 import uuid from 'uuid-random';
 import { VOFormatException } from '../errors/vo-format.exception.js';
-import { ValueObject } from '../value-object.js';
+import { ValueObject } from './value-object.js';
 
 export class UuidVO extends ValueObject {
     equals(valueObject) {

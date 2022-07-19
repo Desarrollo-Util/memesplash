@@ -1,8 +1,8 @@
 /**
  * Image allowed formats
  */
-export const ImageFormat = {
-    JPG: 'jpg',
-    PNG: 'png',
-    GIF: 'gif',
+export const IMAGE_FORMATS = {
+    JPG: 'image/jpeg',
+    PNG: 'image/png',
+    GIF: 'image/gif',
 };
