@@ -22,6 +22,17 @@ export class ImageModel {
      * @param {PreviousDateVO} createdAt Image creation date
      */
     constructor(id, title, slug, format, size, height, width, createdAt) {
+        this.assertIsValid(
+            id,
+            title,
+            slug,
+            format,
+            size,
+            height,
+            width,
+            createdAt
+        );
+
         this.id = id;
         this.title = title;
         this.slug = slug;

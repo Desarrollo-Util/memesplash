@@ -18,8 +18,7 @@ const storage = multer.diskStorage({
         const filename = createdAt + '-' + file.originalname;
         const extName = extname(IMAGE_PATH);
 
-        req.createdAt = createdAt;
-        req.slug = `images/${filename}`;
+        req.slug = 'images';
         req.title = filename.replace(extName, '');
 
         cb(null, filename);

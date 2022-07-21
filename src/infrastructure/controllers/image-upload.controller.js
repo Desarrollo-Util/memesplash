@@ -9,7 +9,7 @@ export class ImageUploadController {
     }
 
     async execute(req, res, next) {
-        const { file, title, createdAt, slug } = req;
+        const { file, title, slug } = req;
         const { id } = req.body;
         const dimensions = await sizeOf(file.path);
 
@@ -23,8 +23,7 @@ export class ImageUploadController {
                 file.mimetype,
                 file.size,
                 dimensions.height,
-                dimensions.width,
-                createdAt
+                dimensions.width
             );
 
             return res.sendStatus(201);
