@@ -15,7 +15,6 @@ export class ImageUploadUseCase {
 
     async execute(id, title, slug, format, size, height, width) {
         try {
-            console.log(id, title, slug, format, size, height, width);
             const imageId = new UuidVO(id);
             const imageTitle = new TitleVO(title);
             const imageSlug = new UrlSlugVO(slug);
