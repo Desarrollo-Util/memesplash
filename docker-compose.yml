@@ -3,6 +3,7 @@ services:
   mongodb:
     container_name: mongodb_dev
     image: docker.io/bitnami/mongodb:latest
+    # image: ghcr.io/zcube/bitnami-compat/mongodb:5.0.9 # Unofficial workaround for Apple Silicon chips, don't use it in prod
     restart: always
     environment:
       MONGODB_ADVERTISED_HOSTNAME: ${MONGODB_HOSTNAME:-localhost}

@@ -28,3 +28,14 @@
 	- URL de la foto
 - images:
 	- Array de ids de las imágenes subidas por el usuario
+
+## Setup
+- `npm install`
+- `npm run docker:up`
+- `npm run dev`
+
+
+### Apple Silicon chips
+La imagen de docker de mongodb oficial no es soportada todavía con docker. Los workarounds son cualquiera de los siguientes:
+1. Cambiar la imagen en docker-compose por una no oficial creada por la comunidad -> [referencia](https://github.com/ZCube/bitnami-compat)
+2. Instalar mongodb x86_64 en tu local emulando con Rosetta -> [referencia](https://www.mongodb.com/community/forums/t/mongo-5-on-apple-m1-laptops-via-docker/136506/7)
