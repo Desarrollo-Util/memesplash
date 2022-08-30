@@ -19,6 +19,7 @@ export const bootstrap = async () => {
 
     app.use(errorMiddleware);
 
+    // TODO: Tratar error de timeout
     await mongoose.connect(process.env.MONGODB_URI, {
         connectTimeoutMS: 4000,
     });
