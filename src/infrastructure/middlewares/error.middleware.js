@@ -12,7 +12,10 @@ export const errorMiddleware = (error, _, res, __) => {
     )
         return res.status(400).send({ errorMessage: error.message });
 
-    if (error instanceof ApplicationUnauthorizedException)
+    if (
+        error instanceof ApplicationUnauthorizedException ||
+        error instanceof InfrastructureFormatException
+    )
         return res.status(401).send({ errorMessage: error.message });
 
     if (error instanceof ApplicationConflictException)

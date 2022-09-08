@@ -31,7 +31,7 @@ export class UserLoginUseCase {
             }
 
             // Devolver el ID del usuario existente
-            return existingUser.id;
+            return existingUser.id.value;
         } catch (err) {
             // Si hay un error de formato de VO, es porque el email/contraseña
             // no tienen el formato adecuado, por lo que se considera login inválido
