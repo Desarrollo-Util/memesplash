@@ -20,9 +20,15 @@ export const bootstrap = async () => {
     app.use(errorMiddleware);
 
     // TODO: Tratar error de timeout
-    await mongoose.connect(process.env.MONGODB_URI, {
-        connectTimeoutMS: 4000,
-    });
+    try {
+        await mongoose.connect(process.env.MONGODB_URI, {
+            connectTimeoutMS: 10000,
+        });
+    } catch (err) {
+        console.err('Se ha producido un error al conectar con la BBDD', err);
+    }
+
+    console.log('Conexión con la BBDD realizada');
 
     app.listen(process.env.PORT, () =>
         console.log(`Servidor levantado en el puerto ${process.env.PORT}`)

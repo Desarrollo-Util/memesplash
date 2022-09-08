@@ -14,6 +14,7 @@ export const setupTests = (test) => {
                 dbName: 'memesplash',
             },
         });
+        console.log('BBDD en memoria levantada');
 
         process.env.MONGODB_URI = mongo.getUri();
 
