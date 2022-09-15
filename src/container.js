@@ -6,6 +6,7 @@ import { UserRegisterUseCase } from './application/use-cases/user-register.useca
 import { ImageUploadController } from './infrastructure/controllers/image-upload.controller.js';
 import { UserLoginController } from './infrastructure/controllers/user-login.controller.js';
 import { UserProfileController } from './infrastructure/controllers/user-profile.controller.js';
+import { UserRefreshController } from './infrastructure/controllers/user-refresh.controller.js';
 import { UserRegisterController } from './infrastructure/controllers/user-register.controller.js';
 import { ImageRepository } from './infrastructure/repositories/image.repository.js';
 import { UserRepository } from './infrastructure/repositories/user.repository.js';
@@ -30,6 +31,7 @@ container.register({
     userLoginController: awilix.asClass(UserLoginController).singleton(),
     userRegisterController: awilix.asClass(UserRegisterController).singleton(),
     userProfileController: awilix.asClass(UserProfileController).singleton(),
+    userRefreshController: awilix.asClass(UserRefreshController).singleton(),
     // Image
     imageUploadController: awilix.asClass(ImageUploadController).singleton(),
 });
