@@ -15,7 +15,7 @@ export class UserRegisterUseCase {
         const userId = new UuidVO(id);
         const userEmail = new EmailVO(email);
 
-        const newUser = new UserModel(
+        const newUser = UserModel.createUser(
             userId,
             new NameVO(name),
             userEmail,

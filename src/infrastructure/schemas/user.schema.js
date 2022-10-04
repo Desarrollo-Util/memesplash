@@ -6,7 +6,6 @@ const schema = new mongoose.Schema({
     name: { type: String, required: true },
     password: { type: String, required: true },
     profilePic: { type: String, required: false },
-    images: { type: [String], required: false },
 });
 
 export const UserSchema = mongoose.model('User', schema);

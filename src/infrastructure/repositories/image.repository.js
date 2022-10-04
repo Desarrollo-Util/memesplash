@@ -17,11 +17,21 @@ export class ImageRepository {
      * @returns Domain image
      */
     toDomain(persistanceImage) {
-        const { _id, title, slug, format, size, height, width, createdAt } =
-            persistanceImage;
+        const {
+            _id,
+            ownerId,
+            title,
+            slug,
+            format,
+            size,
+            height,
+            width,
+            createdAt,
+        } = persistanceImage;
 
         return new ImageModel(
             new UuidVO(_id),
+            new UuidVO(ownerId),
             new TitleVO(title),
             new UrlSlugVO(slug),
             new ImageFormatVO(format),
@@ -38,11 +48,21 @@ export class ImageRepository {
      * @returns Database image
      */
     toPersistance(domainImage) {
-        const { id, title, slug, format, size, height, width, createdAt } =
-            domainImage;
+        const {
+            id,
+            ownerId,
+            title,
+            slug,
+            format,
+            size,
+            height,
+            width,
+            createdAt,
+        } = domainImage;
 
         return {
             _id: id.value,
+            ownerId: ownerId.value,
             title: title.value,
             slug: slug.value,
             format: format.value,
@@ -79,6 +99,29 @@ export class ImageRepository {
         if (!imageFound) return null;
 
         return this.toDomain(imageFound);
+    }
+
+    /**
+     * Finds images by ownerId
+     * @returns Domain images array
+     */
+    async findAll() {
+        const ownerImages = await ImageSchema.find().exec();
+
+        return ownerImages.map((image) => this.toDomain(image));
+    }
+
+    /**
+     * Finds images by ownerId
+     * @param {UuidVO} ownerId Image owner Id
+     * @returns Domain images array
+     */
+    async findByOwnerId(ownerId) {
+        const ownerImages = await ImageSchema.find({
+            ownerId: ownerId.value,
+        }).exec();
+
+        return ownerImages.map((image) => this.toDomain(image));
     }
 
     /**

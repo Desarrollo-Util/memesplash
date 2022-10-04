@@ -6,7 +6,7 @@ import { setupTests } from './utils/setup-tests.js';
 
 setupTests(test);
 
-const endpoint = `http://localhost:${process.env.PORT}/register`;
+const endpoint = `http://localhost:${process.env.PORT}/users/register`;
 const testUserA = generateRandomUser();
 const testUserB = generateRandomUser();
 

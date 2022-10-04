@@ -2,6 +2,7 @@ import { UserModel } from '../../domain/models/user.model.js';
 import { EmailVO } from '../../domain/value-objects/email.vo.js';
 import { NameVO } from '../../domain/value-objects/name.vo.js';
 import { PasswordVO } from '../../domain/value-objects/password.vo.js';
+import { ProfilePicVO } from '../../domain/value-objects/profile-pic.vo.js';
 import { UuidVO } from '../../domain/value-objects/uuid.vo.js';
 import { UserSchema } from '../schemas/user.schema.js';
 
@@ -15,16 +16,14 @@ export class UserRepository {
      * @returns Domain user
      */
     toDomain(persistanceUser) {
-        const { _id, email, name, password, profilePic, images } =
-            persistanceUser;
+        const { _id, email, name, password, profilePic } = persistanceUser;
 
         return new UserModel(
             new UuidVO(_id),
             new NameVO(name),
             new EmailVO(email),
             new PasswordVO(password),
-            profilePic,
-            images
+            profilePic ? new ProfilePicVO(profilePic) : undefined
         );
     }
 
@@ -34,15 +33,14 @@ export class UserRepository {
      * @returns Database user
      */
     toPersistance(domainUser) {
-        const { id, name, email, password, profilePic, images } = domainUser;
+        const { id, name, email, password, profilePic } = domainUser;
 
         return {
             _id: id.value,
             name: name.value,
             email: email.value,
             password: password.value,
-            profilePic,
-            images,
+            profilePic: profilePic ? profilePic.value : undefined,
         };
     }
 
@@ -84,5 +82,13 @@ export class UserRepository {
         const user = new UserSchema(persistanceUser);
 
         await user.save();
+    }
+
+    async update(domainUser) {
+        const persistanceUser = this.toPersistance(domainUser);
+
+        const { _id, ...rest } = persistanceUser;
+
+        await UserSchema.findByIdAndUpdate(_id, rest).exec();
     }
 }

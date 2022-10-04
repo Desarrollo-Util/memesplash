@@ -13,9 +13,10 @@ export class ImageUploadUseCase {
         this.imageRepository = imageRepository;
     }
 
-    async execute(id, title, slug, format, size, height, width) {
+    async execute(id, ownerId, title, slug, format, size, height, width) {
         try {
             const imageId = new UuidVO(id);
+            const imageOwnerId = new UuidVO(ownerId);
             const imageTitle = new TitleVO(title);
             const imageSlug = new UrlSlugVO(slug);
             const imageFormat = new ImageFormatVO(format);
@@ -26,6 +27,7 @@ export class ImageUploadUseCase {
 
             const image = new ImageModel(
                 imageId,
+                imageOwnerId,
                 imageTitle,
                 imageSlug,
                 imageFormat,

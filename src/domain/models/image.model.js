@@ -13,6 +13,7 @@ export class ImageModel {
     /**
      * Constructor
      * @param {UuidVO} id Image unique identifier
+     * @param {UuidVO} ownerId Image owner unique identifier
      * @param {TitleVO} title Image title
      * @param {UrlSlugVO} slug Image filename
      * @param {ImageFormatVO} format Image format
@@ -21,9 +22,20 @@ export class ImageModel {
      * @param {IntGtZeroVO} width Image width in pixels
      * @param {PreviousDateVO} createdAt Image creation date
      */
-    constructor(id, title, slug, format, size, height, width, createdAt) {
+    constructor(
+        id,
+        ownerId,
+        title,
+        slug,
+        format,
+        size,
+        height,
+        width,
+        createdAt
+    ) {
         this.assertIsValid(
             id,
+            ownerId,
             title,
             slug,
             format,
@@ -34,6 +46,7 @@ export class ImageModel {
         );
 
         this.id = id;
+        this.ownerId = ownerId;
         this.title = title;
         this.slug = slug;
         this.format = format;
@@ -43,9 +56,20 @@ export class ImageModel {
         this.createdAt = createdAt;
     }
 
-    assertIsValid(id, title, slug, format, size, height, width, createdAt) {
+    assertIsValid(
+        id,
+        ownerId,
+        title,
+        slug,
+        format,
+        size,
+        height,
+        width,
+        createdAt
+    ) {
         if (
             !(id instanceof UuidVO) ||
+            !(ownerId instanceof UuidVO) ||
             !(title instanceof TitleVO) ||
             !(slug instanceof UrlSlugVO) ||
             !(format instanceof ImageFormatVO) ||

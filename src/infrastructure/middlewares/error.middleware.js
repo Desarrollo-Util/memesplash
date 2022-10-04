@@ -4,7 +4,7 @@ import { DomainFormatException } from '../../domain/errors/domain-format.excepti
 import { InfrastructureFormatException } from '../errors/infrastructure-format.exception.js';
 
 export const errorMiddleware = (error, _, res, __) => {
-    // console.error('\x1b[0;31m' + error.message);
+    // console.error('\x1b[0;31m' + error.stack);
 
     if (
         error instanceof DomainFormatException ||

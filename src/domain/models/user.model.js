@@ -14,10 +14,9 @@ export class UserModel {
      * @param {NameVO} name User name
      * @param {EmailVO} email User email
      * @param {PasswordVO} password User hashed password
-     * @param {String} profilePic User profile picture URL
-     * @param {String[]} images User uploaded image IDs
+     * @param {ProfilePicVO} profilePic User profile picture URL
      */
-    constructor(id, name, email, password, profilePic, images) {
+    constructor(id, name, email, password, profilePic) {
         this.assertIsValid(id, name, email, password);
 
         this.id = id;
@@ -25,7 +24,10 @@ export class UserModel {
         this.email = email;
         this.password = password;
         this.profilePic = profilePic;
-        this.images = images;
+    }
+
+    static createUser(id, name, email, password) {
+        return new UserModel(id, name, email, password, undefined);
     }
 
     assertIsValid(id, name, email, password) {

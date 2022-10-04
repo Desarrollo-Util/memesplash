@@ -5,6 +5,7 @@ import { fileURLToPath } from 'url';
 import container from '../../container.js';
 import { IMAGE_FORMATS } from '../../domain/constants/image-format.constant.js';
 import { InvalidMimetypeFormatException } from '../errors/invalid-mimetype.exception.js';
+import { authMiddleware } from '../middlewares/auth.middleware.js';
 
 const IMAGE_PATH = resolve(
     fileURLToPath(import.meta.url),
@@ -39,11 +40,24 @@ const upload = multer({
 const router = Router();
 
 const imageUploadController = container.resolve('imageUploadController');
+const imageFindByOwnerController = container.resolve(
+    'imageFindByOwnerController'
+);
+const imageFindAllController = container.resolve('imageFindAllController');
 
 router.post(
     '/upload',
+    authMiddleware,
     upload.single('image'),
     imageUploadController.execute.bind(imageUploadController)
 );
+
+router.get(
+    '/my-images',
+    authMiddleware,
+    imageFindByOwnerController.execute.bind(imageFindByOwnerController)
+);
+
+router.get('/', imageFindAllController.execute.bind(imageFindAllController));
 
 export const imageRoutes = router;
