@@ -7,6 +7,7 @@ import { PasswordVO } from '../../domain/value-objects/password.vo.js';
 import { ProfilePicVO } from '../../domain/value-objects/profile-pic.vo.js';
 import { UuidVO } from '../../domain/value-objects/uuid.vo.js';
 import { UserSchema } from '../schemas/user.schema.js';
+import { IUser } from '../types/schemas/user-doc.interface';
 
 /**
  * User MongoDB repository implementation
@@ -18,8 +19,7 @@ export class UserRepository implements IUserRepository {
      * @param persistanceUser Database user
      * @returns Domain user
      */
-    // TODO: Schema database types
-    private toDomain(persistanceUser: any) {
+    private toDomain(persistanceUser: IUser) {
         const { _id, email, name, password, profilePic } = persistanceUser;
 
         return new UserModel(

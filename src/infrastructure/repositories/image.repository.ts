@@ -8,6 +8,7 @@ import { TitleVO } from '../../domain/value-objects/title.vo.js';
 import { UrlSlugVO } from '../../domain/value-objects/url-slug.vo.js';
 import { UuidVO } from '../../domain/value-objects/uuid.vo.js';
 import { ImageSchema } from '../schemas/image.schema.js';
+import { IImage } from '../types/schemas/image-doc.interface.js';
 
 /**
  * Image MongoDB repository implementation
@@ -19,8 +20,7 @@ export class ImageRepository implements IImageRepository {
      * @param persistanceImage Database image
      * @returns Domain image
      */
-    // TODO: Schema database types
-    private toDomain(persistanceImage: any) {
+    private toDomain(persistanceImage: IImage) {
         const {
             _id,
             ownerId,
