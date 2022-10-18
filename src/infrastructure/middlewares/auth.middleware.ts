@@ -8,7 +8,7 @@ import { verifyAsync } from '../services/jwt.service';
 
 export const authMiddleware: preHandlerAsyncHookHandler = async (
     req: FastifyRequest,
-    _res: FastifyReply
+    res: FastifyReply
 ): Promise<void> => {
     const jwt = req.headers.authorization?.split('Bearer ')?.[1];
     if (!jwt) throw new InfrastructureUnauthorizedException();
@@ -16,7 +16,7 @@ export const authMiddleware: preHandlerAsyncHookHandler = async (
     try {
         const jwtPayload = await verifyAsync(jwt);
 
-        req.userId = jwtPayload.id;
+        res.userId = jwtPayload.id;
     } catch (err) {
         throw new InfrastructureUnauthorizedException();
     }

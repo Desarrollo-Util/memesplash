@@ -1,10 +1,11 @@
-import { inject } from 'inversify';
+import { inject, injectable } from 'inversify';
 import { VOFormatException } from '../../domain/errors/vo-format.exception';
 import { IUserRepository } from '../../domain/repository/user-repository.interface';
 import { UuidVO } from '../../domain/value-objects/uuid.vo';
 import { ContainerSymbols } from '../../symbols';
 import { ApplicationUnauthorizedException } from '../errors/application-unauthorized.exception';
 
+@injectable()
 export class UserProfileUseCase {
     constructor(
         @inject(ContainerSymbols.UserRepository)

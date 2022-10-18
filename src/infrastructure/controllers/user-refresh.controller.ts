@@ -1,10 +1,12 @@
 import { FastifyReply, FastifyRequest } from 'fastify';
+import { injectable } from 'inversify';
 import { SignOptions } from 'jsonwebtoken';
 import { signAsync } from '../services/jwt.service';
 
+@injectable()
 export class UserRefreshController {
-    async execute(req: FastifyRequest, res: FastifyReply) {
-        const { userId } = req;
+    async execute(_req: FastifyRequest, res: FastifyReply) {
+        const { userId } = res;
 
         const payload = { id: userId };
         const signOptions: SignOptions = {

@@ -6,8 +6,11 @@ import { UserRefreshController } from '../controllers/user-refresh.controller';
 import { UserRegisterController } from '../controllers/user-register.controller';
 
 import { FastifyInstance } from 'fastify';
-import { UserLoginDto } from '../dtos/user-login.dto';
-import { UserRegisterDto } from '../dtos/user-register.dto';
+import { UserLoginDto, UserLoginDtoType } from '../dtos/user-login.dto';
+import {
+    UserRegisterDto,
+    UserRegisterDtoType,
+} from '../dtos/user-register.dto';
 import { authMiddleware } from '../middlewares/auth.middleware';
 
 const userLoginController = container.get<UserLoginController>(
@@ -30,18 +33,7 @@ export const UserRoutes = (fastify: FastifyInstance, options: any) => {
         handler: userProfileController.execute.bind(userProfileController),
     });
 
-    fastify.post(
-        'login',
-        {
-            schema: {
-                body: UserLoginDto,
-            },
-            preHandler: authMiddleware,
-        },
-        userLoginController.execute.bind(userLoginController)
-    );
-
-    fastify.route({
+    fastify.route<{ Body: UserLoginDtoType }>({
         method: 'POST',
         url: 'login',
         schema: {
@@ -51,7 +43,7 @@ export const UserRoutes = (fastify: FastifyInstance, options: any) => {
         handler: userLoginController.execute.bind(userLoginController),
     });
 
-    fastify.route({
+    fastify.route<{ Body: UserRegisterDtoType }>({
         method: 'POST',
         url: 'register',
         schema: {

@@ -7,7 +7,7 @@ import { ContainerSymbols } from '../../symbols';
 import { ImageFindAllController } from '../controllers/image-find-all.controller';
 import { ImageFindByOwnerController } from '../controllers/image-find-by-owner.controller';
 import { ImageUploadController } from '../controllers/image-upload.controller';
-import { ImageUploadDto } from '../dtos/image-upload.dto';
+import { ImageUploadDto, ImageUploadDtoType } from '../dtos/image-upload.dto';
 import { InvalidMimetypeFormatException } from '../errors/invalid-mimetype.exception';
 import { authMiddleware } from '../middlewares/auth.middleware';
 
@@ -52,7 +52,7 @@ const imageFindAllController = container.get<ImageFindAllController>(
 );
 
 export const ImageRoutes = (fastify: FastifyInstance, options: any) => {
-    fastify.route({
+    fastify.route<{ Body: ImageUploadDtoType }>({
         method: 'POST',
         url: '/upload',
         schema: {

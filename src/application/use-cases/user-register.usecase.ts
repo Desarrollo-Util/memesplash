@@ -1,4 +1,4 @@
-import { inject } from 'inversify';
+import { inject, injectable } from 'inversify';
 import { UserModel } from '../../domain/models/user.model';
 import { IUserRepository } from '../../domain/repository/user-repository.interface';
 import { EmailVO } from '../../domain/value-objects/email.vo';
@@ -9,6 +9,7 @@ import { ContainerSymbols } from '../../symbols';
 import { UserEmailAlreadyInUseException } from '../errors/user-email-already-in-use.exception';
 import { UserIdAlreadyInUseException } from '../errors/user-id-already-in-use.exception';
 
+@injectable()
 export class UserRegisterUseCase {
     constructor(
         @inject(ContainerSymbols.UserRepository)

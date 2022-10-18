@@ -2,9 +2,8 @@
     "name": "memesplash",
     "version": "0.0.1",
     "main": "index.js",
-    "type": "module",
     "scripts": {
-        "dev": "nodemon src/index.js",
+        "dev": "tsc-watch --onSuccess \"node dist/index.js\"",
         "test": "ava ./test/**/*.test.js",
         "docker:up": "docker-compose -p memesplash up -d",
         "docker:down": "docker-compose -p memesplash down",
@@ -27,8 +26,8 @@
         "got": "12.5.2",
         "mongodb-memory-server": "8.9.3",
         "node-fetch": "3.2.10",
-        "nodemon": "2.0.20",
         "prettier": "2.7.1",
+        "tsc-watch": "5.0.3",
         "typescript": "4.8.4"
     },
     "dependencies": {

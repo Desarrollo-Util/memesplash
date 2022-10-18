@@ -1,7 +1,8 @@
-import { inject } from 'inversify';
+import { inject, injectable } from 'inversify';
 import { IImageRepository } from '../../domain/repository/image-repository.interface';
 import { ContainerSymbols } from '../../symbols';
 
+@injectable()
 export class ImageFindAllUseCase {
     constructor(
         @inject(ContainerSymbols.ImageRepository)

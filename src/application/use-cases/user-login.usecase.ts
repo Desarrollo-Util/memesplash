@@ -1,4 +1,4 @@
-import { inject } from 'inversify';
+import { inject, injectable } from 'inversify';
 import { VOFormatException } from '../../domain/errors/vo-format.exception';
 import { IUserRepository } from '../../domain/repository/user-repository.interface';
 import { EmailVO } from '../../domain/value-objects/email.vo';
@@ -6,6 +6,7 @@ import { PlainPasswordVO } from '../../domain/value-objects/plain-password.vo';
 import { ContainerSymbols } from '../../symbols';
 import { InvalidLoginException } from '../errors/invalid-login.exception';
 
+@injectable()
 export class UserLoginUseCase {
     constructor(
         @inject(ContainerSymbols.UserRepository)

@@ -1,4 +1,4 @@
-import { inject } from 'inversify';
+import { inject, injectable } from 'inversify';
 import { ImageFormats } from '../../domain/constants/image-formats.enum';
 import { VOFormatException } from '../../domain/errors/vo-format.exception';
 import { ImageModel } from '../../domain/models/image.model';
@@ -12,6 +12,7 @@ import { UuidVO } from '../../domain/value-objects/uuid.vo';
 import { ContainerSymbols } from '../../symbols';
 import { InvalidImageException } from '../errors/invalid-image-exception';
 
+@injectable()
 export class ImageUploadUseCase {
     constructor(
         @inject(ContainerSymbols.ImageRepository)

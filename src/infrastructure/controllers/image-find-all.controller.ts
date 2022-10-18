@@ -1,8 +1,9 @@
 import { FastifyReply, FastifyRequest } from 'fastify';
-import { inject } from 'inversify';
+import { inject, injectable } from 'inversify';
 import { ImageFindAllUseCase } from '../../application/use-cases/image-find-all.usecase';
 import { ContainerSymbols } from '../../symbols';
 
+@injectable()
 export class ImageFindAllController {
     constructor(
         @inject(ContainerSymbols.ImageFindAllUseCase)
