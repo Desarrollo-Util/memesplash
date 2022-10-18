@@ -1,8 +1,8 @@
-import { EmailVO } from '../value-objects/email.vo.js';
-import { NameVO } from '../value-objects/name.vo.js';
-import { PasswordVO } from '../value-objects/password.vo.js';
+import { EmailVO } from '../value-objects/email.vo';
+import { NameVO } from '../value-objects/name.vo';
+import { PasswordVO } from '../value-objects/password.vo';
 import { ProfilePicVO } from '../value-objects/profile-pic.vo';
-import { UuidVO } from '../value-objects/uuid.vo.js';
+import { UuidVO } from '../value-objects/uuid.vo';
 
 /**
  * Registered user in the application

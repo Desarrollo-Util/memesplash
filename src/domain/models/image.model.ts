@@ -1,9 +1,9 @@
-import { ImageFormatVO } from '../value-objects/image-format.vo.js';
-import { IntGtZeroVO } from '../value-objects/int-gt-zero.vo.js';
-import { PreviousDateVO } from '../value-objects/previous-date.vo.js';
-import { TitleVO } from '../value-objects/title.vo.js';
-import { UrlSlugVO } from '../value-objects/url-slug.vo.js';
-import { UuidVO } from '../value-objects/uuid.vo.js';
+import { ImageFormatVO } from '../value-objects/image-format.vo';
+import { IntGtZeroVO } from '../value-objects/int-gt-zero.vo';
+import { PreviousDateVO } from '../value-objects/previous-date.vo';
+import { TitleVO } from '../value-objects/title.vo';
+import { UrlSlugVO } from '../value-objects/url-slug.vo';
+import { UuidVO } from '../value-objects/uuid.vo';
 
 /**
  * Image uploaded in the application

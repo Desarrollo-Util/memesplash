@@ -1,9 +1,9 @@
 import { inject } from 'inversify';
-import { VOFormatException } from '../../domain/errors/vo-format.exception.js';
-import { IUserRepository } from '../../domain/repository/user-repository.interface.js';
-import { UuidVO } from '../../domain/value-objects/uuid.vo.js';
-import { ContainerSymbols } from '../../symbols.js';
-import { ApplicationUnauthorizedException } from '../errors/application-unauthorized.exception.js';
+import { VOFormatException } from '../../domain/errors/vo-format.exception';
+import { IUserRepository } from '../../domain/repository/user-repository.interface';
+import { UuidVO } from '../../domain/value-objects/uuid.vo';
+import { ContainerSymbols } from '../../symbols';
+import { ApplicationUnauthorizedException } from '../errors/application-unauthorized.exception';
 
 export class UserProfileUseCase {
     constructor(

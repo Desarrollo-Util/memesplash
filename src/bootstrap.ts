@@ -1,20 +1,21 @@
 import cors from '@fastify/cors';
+import { TypeBoxTypeProvider } from '@fastify/type-provider-typebox';
 import { config as dotenvConfig } from 'dotenv';
 import fastify from 'fastify';
 import mongoose from 'mongoose';
 import { errorMiddleware } from './infrastructure/middlewares/error.middleware';
-import { imageRoutes } from './infrastructure/routes/image.routes';
-import { userRoutes } from './infrastructure/routes/user.routes';
+import { ImageRoutes } from './infrastructure/routes/image.routes';
+import { UserRoutes } from './infrastructure/routes/user.routes';
 
 dotenvConfig();
 
 export const bootstrap = async () => {
-    const app = fastify();
+    const app = fastify().withTypeProvider<TypeBoxTypeProvider>();
 
     app.register(cors);
 
-    app.register(userRoutes, { prefix: '/users' });
-    app.register(imageRoutes, { prefix: '/images' });
+    app.register(UserRoutes, { prefix: '/users' });
+    app.register(ImageRoutes, { prefix: '/images' });
 
     app.setErrorHandler(errorMiddleware);
 

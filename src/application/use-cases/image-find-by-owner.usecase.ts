@@ -1,7 +1,7 @@
 import { inject } from 'inversify';
-import { IImageRepository } from '../../domain/repository/image-repository.interface.js';
-import { UuidVO } from '../../domain/value-objects/uuid.vo.js';
-import { ContainerSymbols } from '../../symbols.js';
+import { IImageRepository } from '../../domain/repository/image-repository.interface';
+import { UuidVO } from '../../domain/value-objects/uuid.vo';
+import { ContainerSymbols } from '../../symbols';
 
 export class ImageFindByOwnerUseCase {
     constructor(

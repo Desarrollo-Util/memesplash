@@ -1,20 +1,19 @@
-import type { NextFunction, Response } from 'express';
-import { signAsync } from '../services/jwt.service.js';
-import { RequestWithAuth } from '../types/request.types.js';
+import { FastifyReply, FastifyRequest } from 'fastify';
+import { SignOptions } from 'jsonwebtoken';
+import { signAsync } from '../services/jwt.service';
 
 export class UserRefreshController {
-    async execute(req: RequestWithAuth, res: Response, next: NextFunction) {
+    async execute(req: FastifyRequest, res: FastifyReply) {
         const { userId } = req;
 
-        try {
-            const payload = { id: userId };
-            const signOptions = { algorithm: 'HS512', expiresIn: '7d' };
+        const payload = { id: userId };
+        const signOptions: SignOptions = {
+            algorithm: 'HS512',
+            expiresIn: '7d',
+        };
 
-            const token = await signAsync(payload, signOptions);
+        const token = await signAsync(payload, signOptions);
 
-            return res.send({ token });
-        } catch (err) {
-            next(err);
-        }
+        return res.send({ token });
     }
 }

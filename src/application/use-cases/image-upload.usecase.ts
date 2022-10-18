@@ -1,16 +1,16 @@
 import { inject } from 'inversify';
-import { ImageFormats } from '../../domain/constants/image-formats.enum.js';
-import { VOFormatException } from '../../domain/errors/vo-format.exception.js';
-import { ImageModel } from '../../domain/models/image.model.js';
-import { IImageRepository } from '../../domain/repository/image-repository.interface.js';
-import { ImageFormatVO } from '../../domain/value-objects/image-format.vo.js';
-import { IntGtZeroVO } from '../../domain/value-objects/int-gt-zero.vo.js';
-import { PreviousDateVO } from '../../domain/value-objects/previous-date.vo.js';
-import { TitleVO } from '../../domain/value-objects/title.vo.js';
-import { UrlSlugVO } from '../../domain/value-objects/url-slug.vo.js';
-import { UuidVO } from '../../domain/value-objects/uuid.vo.js';
-import { ContainerSymbols } from '../../symbols.js';
-import { InvalidImageException } from '../errors/invalid-image-exception.js';
+import { ImageFormats } from '../../domain/constants/image-formats.enum';
+import { VOFormatException } from '../../domain/errors/vo-format.exception';
+import { ImageModel } from '../../domain/models/image.model';
+import { IImageRepository } from '../../domain/repository/image-repository.interface';
+import { ImageFormatVO } from '../../domain/value-objects/image-format.vo';
+import { IntGtZeroVO } from '../../domain/value-objects/int-gt-zero.vo';
+import { PreviousDateVO } from '../../domain/value-objects/previous-date.vo';
+import { TitleVO } from '../../domain/value-objects/title.vo';
+import { UrlSlugVO } from '../../domain/value-objects/url-slug.vo';
+import { UuidVO } from '../../domain/value-objects/uuid.vo';
+import { ContainerSymbols } from '../../symbols';
+import { InvalidImageException } from '../errors/invalid-image-exception';
 
 export class ImageUploadUseCase {
     constructor(

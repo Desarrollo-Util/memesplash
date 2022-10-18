@@ -1,13 +1,13 @@
 import { inject } from 'inversify';
-import { UserModel } from '../../domain/models/user.model.js';
-import { IUserRepository } from '../../domain/repository/user-repository.interface.js';
-import { EmailVO } from '../../domain/value-objects/email.vo.js';
-import { NameVO } from '../../domain/value-objects/name.vo.js';
-import { PasswordVO } from '../../domain/value-objects/password.vo.js';
-import { UuidVO } from '../../domain/value-objects/uuid.vo.js';
-import { ContainerSymbols } from '../../symbols.js';
-import { UserEmailAlreadyInUseException } from '../errors/user-email-already-in-use.exception.js';
-import { UserIdAlreadyInUseException } from '../errors/user-id-already-in-use.exception.js';
+import { UserModel } from '../../domain/models/user.model';
+import { IUserRepository } from '../../domain/repository/user-repository.interface';
+import { EmailVO } from '../../domain/value-objects/email.vo';
+import { NameVO } from '../../domain/value-objects/name.vo';
+import { PasswordVO } from '../../domain/value-objects/password.vo';
+import { UuidVO } from '../../domain/value-objects/uuid.vo';
+import { ContainerSymbols } from '../../symbols';
+import { UserEmailAlreadyInUseException } from '../errors/user-email-already-in-use.exception';
+import { UserIdAlreadyInUseException } from '../errors/user-id-already-in-use.exception';
 
 export class UserRegisterUseCase {
     constructor(

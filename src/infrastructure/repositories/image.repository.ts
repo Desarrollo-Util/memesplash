@@ -1,14 +1,14 @@
 import { injectable } from 'inversify';
-import { ImageModel } from '../../domain/models/image.model.js';
-import { IImageRepository } from '../../domain/repository/image-repository.interface.js';
-import { ImageFormatVO } from '../../domain/value-objects/image-format.vo.js';
-import { IntGtZeroVO } from '../../domain/value-objects/int-gt-zero.vo.js';
-import { PreviousDateVO } from '../../domain/value-objects/previous-date.vo.js';
-import { TitleVO } from '../../domain/value-objects/title.vo.js';
-import { UrlSlugVO } from '../../domain/value-objects/url-slug.vo.js';
-import { UuidVO } from '../../domain/value-objects/uuid.vo.js';
-import { ImageSchema } from '../schemas/image.schema.js';
-import { IImage } from '../types/schemas/image-doc.interface.js';
+import { ImageModel } from '../../domain/models/image.model';
+import { IImageRepository } from '../../domain/repository/image-repository.interface';
+import { ImageFormatVO } from '../../domain/value-objects/image-format.vo';
+import { IntGtZeroVO } from '../../domain/value-objects/int-gt-zero.vo';
+import { PreviousDateVO } from '../../domain/value-objects/previous-date.vo';
+import { TitleVO } from '../../domain/value-objects/title.vo';
+import { UrlSlugVO } from '../../domain/value-objects/url-slug.vo';
+import { UuidVO } from '../../domain/value-objects/uuid.vo';
+import { ImageSchema } from '../schemas/image.schema';
+import { IImage } from '../types/schemas/image-doc.interface';
 
 /**
  * Image MongoDB repository implementation

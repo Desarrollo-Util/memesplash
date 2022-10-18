@@ -1,10 +1,12 @@
 import { FastifyReply, FastifyRequest } from 'fastify';
 import { inject } from 'inversify';
-import { UserLoginUseCase } from '../../application/use-cases/user-login.usecase.js';
-import { ContainerSymbols } from '../../symbols.js';
-import { MissingFieldsFormatException } from '../errors/missing-fields.exception.js';
-import { UnnecesaryFieldsFormatException } from '../errors/unnecesary-fields.exception.js';
-import { signAsync } from '../services/jwt.service.js';
+import { SignOptions } from 'jsonwebtoken';
+import { UserLoginUseCase } from '../../application/use-cases/user-login.usecase';
+import { ContainerSymbols } from '../../symbols';
+import { UserLoginDtoType } from '../dtos/user-login.dto';
+import { MissingFieldsFormatException } from '../errors/missing-fields.exception';
+import { UnnecesaryFieldsFormatException } from '../errors/unnecesary-fields.exception';
+import { signAsync } from '../services/jwt.service';
 
 export class UserLoginController {
     constructor(
@@ -12,7 +14,10 @@ export class UserLoginController {
         private userLoginUseCase: UserLoginUseCase
     ) {}
 
-    async execute(req: FastifyRequest, res: FastifyReply) {
+    async execute(
+        req: FastifyRequest<{ Body: UserLoginDtoType }>,
+        res: FastifyReply
+    ) {
         const { email, password, ...rest } = req.body;
 
         if (!email || !password) throw new MissingFieldsFormatException();
@@ -23,7 +28,10 @@ export class UserLoginController {
         const id = await this.userLoginUseCase.execute(email, password);
 
         const payload = { id };
-        const signOptions = { algorithm: 'HS512', expiresIn: '7d' };
+        const signOptions: SignOptions = {
+            algorithm: 'HS512',
+            expiresIn: '7d',
+        };
 
         const token = await signAsync(payload, signOptions);
 

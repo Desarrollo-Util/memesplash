@@ -1,8 +1,8 @@
 import { FastifyError, FastifyReply, FastifyRequest } from 'fastify';
-import { ApplicationConflictException } from '../../application/errors/application-conflict.exception.js';
-import { ApplicationUnauthorizedException } from '../../application/errors/application-unauthorized.exception.js';
-import { DomainFormatException } from '../../domain/errors/domain-format.exception.js';
-import { InfrastructureFormatException } from '../errors/infrastructure-format.exception.js';
+import { ApplicationConflictException } from '../../application/errors/application-conflict.exception';
+import { ApplicationUnauthorizedException } from '../../application/errors/application-unauthorized.exception';
+import { DomainFormatException } from '../../domain/errors/domain-format.exception';
+import { InfrastructureFormatException } from '../errors/infrastructure-format.exception';
 
 export const errorMiddleware: (
     error: FastifyError,

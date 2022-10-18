@@ -1,11 +1,14 @@
-import container from '../../container.js';
-import { ContainerSymbols } from '../../symbols.js';
-import { UserLoginController } from '../controllers/user-login.controller.js';
-import { UserProfileController } from '../controllers/user-profile.controller.js';
-import { UserRefreshController } from '../controllers/user-refresh.controller.js';
-import { UserRegisterController } from '../controllers/user-register.controller.js';
+import container from '../../container';
+import { ContainerSymbols } from '../../symbols';
+import { UserLoginController } from '../controllers/user-login.controller';
+import { UserProfileController } from '../controllers/user-profile.controller';
+import { UserRefreshController } from '../controllers/user-refresh.controller';
+import { UserRegisterController } from '../controllers/user-register.controller';
 
 import { FastifyInstance } from 'fastify';
+import { UserLoginDto } from '../dtos/user-login.dto';
+import { UserRegisterDto } from '../dtos/user-register.dto';
+import { authMiddleware } from '../middlewares/auth.middleware';
 
 const userLoginController = container.get<UserLoginController>(
     ContainerSymbols.UserLoginController
@@ -21,28 +24,45 @@ const userRefreshController = container.get<UserRefreshController>(
 );
 
 export const UserRoutes = (fastify: FastifyInstance, options: any) => {
-    // Auth
-    fastify.get(
-        '/profile',
-        userProfileController.execute.bind(userProfileController)
-    );
+    fastify.route({
+        method: 'GET',
+        url: 'profile',
+        handler: userProfileController.execute.bind(userProfileController),
+    });
 
     fastify.post(
-        '/login',
+        'login',
         {
+            schema: {
+                body: UserLoginDto,
+            },
             preHandler: authMiddleware,
         },
         userLoginController.execute.bind(userLoginController)
     );
 
-    fastify.post(
-        '/register',
-        userRegisterController.execute.bind(userRegisterController)
-    );
+    fastify.route({
+        method: 'POST',
+        url: 'login',
+        schema: {
+            body: UserLoginDto,
+        },
+        preHandler: authMiddleware,
+        handler: userLoginController.execute.bind(userLoginController),
+    });
 
-    // Auth
-    fastify.post(
-        '/refresh',
-        userRefreshController.execute.bind(userRefreshController)
-    );
+    fastify.route({
+        method: 'POST',
+        url: 'register',
+        schema: {
+            body: UserRegisterDto,
+        },
+        handler: userRegisterController.execute.bind(userRegisterController),
+    });
+
+    fastify.route({
+        method: 'GET',
+        url: 'refresh',
+        handler: userRefreshController.execute.bind(userRefreshController),
+    });
 };

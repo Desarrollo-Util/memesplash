@@ -1,6 +1,6 @@
-import { ImageFormats } from '../constants/image-formats.enum.js';
-import { VOFormatException } from '../errors/vo-format.exception.js';
-import { ValueObject } from './value-object.js';
+import { ImageFormats } from '../constants/image-formats.enum';
+import { VOFormatException } from '../errors/vo-format.exception';
+import { ValueObject } from './value-object';
 
 export class ImageFormatVO extends ValueObject<ImageFormats> {
     public equals(valueObject: ImageFormatVO) {

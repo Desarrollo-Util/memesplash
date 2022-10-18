@@ -1,12 +1,12 @@
 import { injectable } from 'inversify';
-import { UserModel } from '../../domain/models/user.model.js';
-import { IUserRepository } from '../../domain/repository/user-repository.interface.js';
-import { EmailVO } from '../../domain/value-objects/email.vo.js';
-import { NameVO } from '../../domain/value-objects/name.vo.js';
-import { PasswordVO } from '../../domain/value-objects/password.vo.js';
-import { ProfilePicVO } from '../../domain/value-objects/profile-pic.vo.js';
-import { UuidVO } from '../../domain/value-objects/uuid.vo.js';
-import { UserSchema } from '../schemas/user.schema.js';
+import { UserModel } from '../../domain/models/user.model';
+import { IUserRepository } from '../../domain/repository/user-repository.interface';
+import { EmailVO } from '../../domain/value-objects/email.vo';
+import { NameVO } from '../../domain/value-objects/name.vo';
+import { PasswordVO } from '../../domain/value-objects/password.vo';
+import { ProfilePicVO } from '../../domain/value-objects/profile-pic.vo';
+import { UuidVO } from '../../domain/value-objects/uuid.vo';
+import { UserSchema } from '../schemas/user.schema';
 import { IUser } from '../types/schemas/user-doc.interface';
 
 /**

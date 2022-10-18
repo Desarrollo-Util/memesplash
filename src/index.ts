@@ -1,3 +1,3 @@
-import { bootstrap } from './bootstrap.js';
+import { bootstrap } from './bootstrap';
 
 bootstrap();

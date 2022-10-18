@@ -1,32 +1,23 @@
-import type { NextFunction, Response } from 'express';
+import {
+    FastifyReply,
+    FastifyRequest,
+    preHandlerAsyncHookHandler,
+} from 'fastify';
 import { InfrastructureUnauthorizedException } from '../errors/unauthorized.exception';
 import { verifyAsync } from '../services/jwt.service';
-import { RequestWithAuth } from '../types/request.types';
 
-export const authMiddleware = async (
-    req: RequestWithAuth,
-    _res: Response,
-    next: NextFunction
-) => {
-    const jwt = req.get('Authorization')?.split('Bearer ')?.[1];
-    if (!jwt) return next(new InfrastructureUnauthorizedException());
+export const authMiddleware: preHandlerAsyncHookHandler = async (
+    req: FastifyRequest,
+    _res: FastifyReply
+): Promise<void> => {
+    const jwt = req.headers.authorization?.split('Bearer ')?.[1];
+    if (!jwt) throw new InfrastructureUnauthorizedException();
 
     try {
         const jwtPayload = await verifyAsync(jwt);
-        req.userId = jwtPayload.id;
 
-        return next();
+        req.userId = jwtPayload.id;
     } catch (err) {
-        return next(new InfrastructureUnauthorizedException());
+        throw new InfrastructureUnauthorizedException();
     }
 };
-
-const isNumber = (value: unknown): value is number => typeof value === 'number';
-
-const a: any = 5;
-
-if (isNumber(a)) {
-    a;
-} else {
-    a;
-}

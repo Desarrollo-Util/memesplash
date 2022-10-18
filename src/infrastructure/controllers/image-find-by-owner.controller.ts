@@ -1,8 +1,7 @@
-import type { NextFunction, Response } from 'express';
+import { FastifyReply, FastifyRequest } from 'fastify';
 import { inject } from 'inversify';
 import { ImageFindByOwnerUseCase } from '../../application/use-cases/image-find-by-owner.usecase';
 import { ContainerSymbols } from '../../symbols';
-import { RequestWithAuth } from '../types/request.types';
 
 export class ImageFindByOwnerController {
     constructor(
@@ -10,17 +9,11 @@ export class ImageFindByOwnerController {
         private imageFindByOwnerUseCase: ImageFindByOwnerUseCase
     ) {}
 
-    async execute(req: RequestWithAuth, res: Response, next: NextFunction) {
+    async execute(req: FastifyRequest, res: FastifyReply) {
         const { userId } = req;
 
-        try {
-            const userImages = await this.imageFindByOwnerUseCase.execute(
-                userId
-            );
+        const userImages = await this.imageFindByOwnerUseCase.execute(userId);
 
-            return res.send(userImages);
-        } catch (err) {
-            next(err);
-        }
+        return res.send(userImages);
     }
 }

@@ -1,5 +1,5 @@
-import { VOFormatException } from '../errors/vo-format.exception.js';
-import { ValueObject } from './value-object.js';
+import { VOFormatException } from '../errors/vo-format.exception';
+import { ValueObject } from './value-object';
 
 export class IntGtZeroVO extends ValueObject<number> {
     public equals(valueObject: IntGtZeroVO) {
