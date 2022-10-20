@@ -54,7 +54,7 @@ const imageFindAllController = container.get<ImageFindAllController>(
 export const ImageRoutes = (
     fastify: FastifyInstance,
     _options: any,
-    done: () => void
+    done: (err?: Error) => void
 ) => {
     fastify.route<{ Body: ImageUploadDtoType }>({
         method: 'POST',
@@ -80,5 +80,6 @@ export const ImageRoutes = (
         url: '/',
         handler: imageFindAllController.execute.bind(imageFindAllController),
     });
+
     done();
 };

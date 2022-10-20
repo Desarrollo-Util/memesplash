@@ -27,7 +27,11 @@ const userRefreshController = container.get<UserRefreshController>(
     ContainerSymbols.UserRefreshController
 );
 
-export const UserRoutes = (fastify: FastifyInstance, options: any) => {
+export const UserRoutes = (
+    fastify: FastifyInstance,
+    options: any,
+    done: (err?: Error) => void
+) => {
     fastify.route({
         method: 'GET',
         url: 'profile',
@@ -61,4 +65,6 @@ export const UserRoutes = (fastify: FastifyInstance, options: any) => {
         url: 'refresh',
         handler: userRefreshController.execute.bind(userRefreshController),
     });
+
+    done();
 };
