@@ -46,19 +46,21 @@ export const UserRoutes = (
             schema: {
                 body: UserLoginDto,
             },
-            preHandler: authMiddleware,
         },
         userLoginController.execute.bind(userLoginController)
     );
 
-    fastify.route<{ Body: UserRegisterDtoType }>({
-        method: 'POST',
-        url: '/register',
-        schema: {
-            body: UserRegisterDto,
+    registerRoute(
+        fastify,
+        {
+            method: 'POST',
+            url: '/register',
+            schema: {
+                body: UserRegisterDto,
+            },
         },
-        handler: userRegisterController.execute.bind(userRegisterController),
-    });
+        userRegisterController.execute.bind(userRegisterController)
+    );
 
     fastify.route({
         method: 'GET',

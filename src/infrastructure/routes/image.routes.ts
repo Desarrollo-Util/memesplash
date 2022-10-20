@@ -10,6 +10,7 @@ import { ImageUploadController } from '../controllers/image-upload.controller';
 import { ImageUploadDto, ImageUploadDtoType } from '../dtos/image-upload.dto';
 import { InvalidMimetypeFormatException } from '../errors/invalid-mimetype.exception';
 import { authMiddleware } from '../middlewares/auth.middleware';
+import { registerRoute } from '../utils/route';
 
 const IMAGE_PATH = resolve(__dirname, '../../../../images');
 
@@ -66,14 +67,22 @@ export const ImageRoutes = (
         handler: imageUploadController.execute.bind(imageUploadController),
     });
 
-    fastify.route({
-        method: 'GET',
-        url: '/my-images',
-        preHandler: authMiddleware,
-        handler: imageFindByOwnerController.execute.bind(
-            imageFindByOwnerController
-        ),
-    });
+    registerRoute(
+        fastify,
+        {
+            method: 'GET',
+            url: '/my-images',
+            preHandler: authMiddleware,
+            schema: {
+                security: [
+                    {
+                        Bearer: [''],
+                    },
+                ],
+            },
+        },
+        imageFindByOwnerController.execute.bind(imageFindByOwnerController)
+    );
 
     fastify.route({
         method: 'GET',

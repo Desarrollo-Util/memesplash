@@ -33,13 +33,15 @@ export const registerRoute = <S extends FastifySchema>(
         >,
         'handler' | 'schema'
     > & {
-        schema: S;
+        schema?: S;
     },
     handler: RouteHandlerMethod<
         RawServerDefault,
         RawRequestDefaultExpression<RawServerDefault>,
         RawReplyDefaultExpression<RawServerDefault>,
-        KeysToCapitalize<S>,
+        KeysToCapitalize<
+            Pick<S, 'body' | 'params' | 'headers' | 'querystring'>
+        >,
         ContextConfigDefault,
         FastifySchema,
         FastifyTypeProviderDefault,
