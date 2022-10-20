@@ -29,12 +29,12 @@ const userRefreshController = container.get<UserRefreshController>(
 
 export const UserRoutes = (
     fastify: FastifyInstance,
-    options: any,
+    _options: any,
     done: (err?: Error) => void
 ) => {
     fastify.route({
         method: 'GET',
-        url: 'profile',
+        url: '/profile',
         handler: userProfileController.execute.bind(userProfileController),
     });
 
@@ -42,7 +42,7 @@ export const UserRoutes = (
         fastify,
         {
             method: 'POST',
-            url: 'login',
+            url: '/login',
             schema: {
                 body: UserLoginDto,
             },
@@ -53,7 +53,7 @@ export const UserRoutes = (
 
     fastify.route<{ Body: UserRegisterDtoType }>({
         method: 'POST',
-        url: 'register',
+        url: '/register',
         schema: {
             body: UserRegisterDto,
         },
@@ -62,7 +62,7 @@ export const UserRoutes = (
 
     fastify.route({
         method: 'GET',
-        url: 'refresh',
+        url: '/refresh',
         handler: userRefreshController.execute.bind(userRefreshController),
     });
 
