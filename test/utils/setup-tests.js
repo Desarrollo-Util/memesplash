@@ -1,11 +1,12 @@
 import { config as dontEnvConfig } from 'dotenv';
 import { MongoMemoryReplSet } from 'mongodb-memory-server';
-import { bootstrap } from '../../src/bootstrap.js';
+import startApp from '../../src/app.js';
+import connectDb from '../../src/connect-db.js';
 
 export const setupTests = (test) => {
     dontEnvConfig();
 
-    let mongo;
+    let mongo, app;
 
     test.before(async () => {
         mongo = await MongoMemoryReplSet.create({
@@ -18,7 +19,8 @@ export const setupTests = (test) => {
 
         process.env.MONGODB_URI = mongo.getUri();
 
-        await bootstrap();
+        await connectDb();
+        await startApp();
     });
 
     test.after.always(async () => {

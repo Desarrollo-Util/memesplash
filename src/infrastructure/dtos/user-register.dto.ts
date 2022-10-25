@@ -1,5 +1,6 @@
 import { Static, Type } from '@sinclair/typebox';
 
+// TODO: Validations
 export const UserRegisterDto = Type.Object(
     {
         id: Type.String(),

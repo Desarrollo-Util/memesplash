@@ -16,32 +16,22 @@ export class UserRegisterUseCase {
         private userRepository: IUserRepository
     ) {}
 
-    async execute(id: string, name: string, email: string, password: string) {
-        const userId = new UuidVO(id);
-        const userEmail = new EmailVO(email);
+    async execute(
+        id: UuidVO,
+        name: NameVO,
+        email: EmailVO,
+        password: PasswordVO
+    ): Promise<void> {
+        const newUser = UserModel.createUser(id, name, email, password);
 
-        const newUser = UserModel.createUser(
-            userId,
-            new NameVO(name),
-            userEmail,
-            await PasswordVO.create(password)
-        );
+        const existingUserById = await this.userRepository.findById(id);
+        if (existingUserById) throw new UserIdAlreadyInUseException();
 
-        // Comprobar si existe id duplicado
-        const existingUserById = await this.userRepository.findById(userId);
-        if (existingUserById) {
-            throw new UserIdAlreadyInUseException();
-        }
-
-        // Comprobar si existe email duplicado
         const existingUserByEmail = await this.userRepository.findByEmail(
-            userEmail
+            email
         );
-        if (existingUserByEmail) {
-            throw new UserEmailAlreadyInUseException();
-        }
+        if (existingUserByEmail) throw new UserEmailAlreadyInUseException();
 
-        // Persistir el nuevo usuario
         await this.userRepository.create(newUser);
     }
 }

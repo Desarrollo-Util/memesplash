@@ -1,6 +1,7 @@
 import { EmailVO } from '../value-objects/email.vo';
 import { NameVO } from '../value-objects/name.vo';
 import { PasswordVO } from '../value-objects/password.vo';
+import { PlainPasswordVO } from '../value-objects/plain-password.vo';
 import { ProfilePicVO } from '../value-objects/profile-pic.vo';
 import { UuidVO } from '../value-objects/uuid.vo';
 
@@ -31,5 +32,9 @@ export class UserModel {
         password: PasswordVO
     ) {
         return new UserModel(id, name, email, password, null);
+    }
+
+    public comparePassword(password: PlainPasswordVO) {
+        return this.password.compare(password);
     }
 }

@@ -3,7 +3,11 @@ import { imageSize } from 'image-size';
 import { inject, injectable } from 'inversify';
 import { promisify } from 'util';
 import { ImageUploadUseCase } from '../../application/use-cases/image-upload.usecase';
-import { ImageFormats } from '../../domain/constants/image-formats.enum';
+import { ImageFormatVO } from '../../domain/value-objects/image-format.vo';
+import { IntGtZeroVO } from '../../domain/value-objects/int-gt-zero.vo';
+import { TitleVO } from '../../domain/value-objects/title.vo';
+import { UrlSlugVO } from '../../domain/value-objects/url-slug.vo';
+import { UuidVO } from '../../domain/value-objects/uuid.vo';
 import { ContainerSymbols } from '../../symbols';
 import { ImageUploadDtoType } from '../dtos/image-upload.dto';
 
@@ -19,10 +23,8 @@ export class ImageUploadController {
     async execute(
         req: FastifyRequest<{ Body: ImageUploadDtoType }>,
         res: FastifyReply
-    ) {
-        const { file, title, slug } = req;
-        const { userId } = res;
-        const { id } = req.body;
+    ): Promise<void> {
+        const { body, title, slug, file } = req;
 
         if (!file) throw new Error();
 
@@ -31,16 +33,16 @@ export class ImageUploadController {
         if (!dimensions) throw new Error();
 
         await this.imageUploadUseCase.execute(
-            id,
-            userId,
-            title,
-            slug,
-            file.mimetype as ImageFormats,
-            file.size,
-            dimensions.height || 0,
-            dimensions.width || 0
+            new UuidVO(body.id),
+            new UuidVO(res.userId),
+            new TitleVO(title),
+            new UrlSlugVO(slug),
+            new ImageFormatVO(file.mimetype),
+            new IntGtZeroVO(file.size),
+            new IntGtZeroVO(dimensions.height || 0),
+            new IntGtZeroVO(dimensions.width || 0)
         );
 
-        return res.code(201).send();
+        res.statusCode = 201;
     }
 }

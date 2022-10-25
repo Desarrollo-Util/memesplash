@@ -1,11 +1,15 @@
 import { FastifyReply, FastifyRequest } from 'fastify';
 import { injectable } from 'inversify';
 import { SignOptions } from 'jsonwebtoken';
+import { UserTokenDtoType } from '../dtos/user-token.dto';
 import { signAsync } from '../services/jwt.service';
 
 @injectable()
 export class UserRefreshController {
-    async execute(_req: FastifyRequest, res: FastifyReply) {
+    async execute(
+        _req: FastifyRequest,
+        res: FastifyReply
+    ): Promise<UserTokenDtoType> {
         const { userId } = res;
 
         const payload = { id: userId };
@@ -16,6 +20,6 @@ export class UserRefreshController {
 
         const token = await signAsync(payload, signOptions);
 
-        return res.send({ token });
+        return { token };
     }
 }

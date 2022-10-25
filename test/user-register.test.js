@@ -1,27 +1,12 @@
 import test from 'ava';
-import got from 'got';
 import { generateRandomUser } from './utils/generate-random-user.js';
 import { expectStatusCode } from './utils/generic-expects.js';
 import { setupTests } from './utils/setup-tests.js';
 
 setupTests(test);
 
-const endpoint = `http://localhost:${process.env.PORT}/users/register`;
 const testUserA = generateRandomUser();
 const testUserB = generateRandomUser();
-
-const fetchRegister = async (t, user) => {
-    try {
-        const response = await got.post(endpoint, {
-            json: user,
-            throwHttpErrors: false,
-        });
-
-        return response;
-    } catch (err) {
-        t.fail(err);
-    }
-};
 
 test.serial('Register succesfully', async (t) => {
     const response = await fetchRegister(t, testUserA);

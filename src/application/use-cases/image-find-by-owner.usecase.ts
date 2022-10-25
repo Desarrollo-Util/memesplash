@@ -1,4 +1,5 @@
 import { inject, injectable } from 'inversify';
+import { ImageModel } from '../../domain/models/image.model';
 import { IImageRepository } from '../../domain/repository/image-repository.interface';
 import { UuidVO } from '../../domain/value-objects/uuid.vo';
 import { ContainerSymbols } from '../../symbols';
@@ -10,23 +11,7 @@ export class ImageFindByOwnerUseCase {
         private imageRepository: IImageRepository
     ) {}
 
-    async execute(ownerId: string) {
-        const imageOwnerId = new UuidVO(ownerId);
-
-        const ownerImages = await this.imageRepository.findByOwnerId(
-            imageOwnerId
-        );
-
-        return ownerImages.map((image) => ({
-            id: image.id.value,
-            ownerId: image.ownerId.value,
-            title: image.title.value,
-            slug: image.slug.value,
-            format: image.format.value,
-            size: image.size.value,
-            height: image.height.value,
-            width: image.width.value,
-            createdAt: image.createdAt.value,
-        }));
+    execute(ownerId: UuidVO): Promise<ImageModel[]> {
+        return this.imageRepository.findByOwnerId(ownerId);
     }
 }

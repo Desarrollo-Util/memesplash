@@ -7,10 +7,9 @@ import { UserRegisterController } from '../controllers/user-register.controller'
 
 import { FastifyInstance } from 'fastify';
 import { UserLoginDto } from '../dtos/user-login.dto';
-import {
-    UserRegisterDto,
-    UserRegisterDtoType,
-} from '../dtos/user-register.dto';
+import { UserRegisterDto } from '../dtos/user-register.dto';
+import { UserTokenDto } from '../dtos/user-token.dto';
+import { UserDto } from '../dtos/user.dto';
 import { authMiddleware } from '../middlewares/auth.middleware';
 import { registerRoute } from '../utils/route';
 
@@ -32,11 +31,20 @@ export const UserRoutes = (
     _options: any,
     done: (err?: Error) => void
 ) => {
-    fastify.route({
-        method: 'GET',
-        url: '/profile',
-        handler: userProfileController.execute.bind(userProfileController),
-    });
+    registerRoute(
+        fastify,
+        {
+            method: 'GET',
+            url: '/profile',
+            preValidation: authMiddleware,
+            schema: {
+                response: {
+                    200: UserDto,
+                },
+            },
+        },
+        userProfileController.execute.bind(userProfileController)
+    );
 
     registerRoute(
         fastify,
@@ -45,6 +53,9 @@ export const UserRoutes = (
             url: '/login',
             schema: {
                 body: UserLoginDto,
+                response: {
+                    200: UserTokenDto,
+                },
             },
         },
         userLoginController.execute.bind(userLoginController)
@@ -57,16 +68,31 @@ export const UserRoutes = (
             url: '/register',
             schema: {
                 body: UserRegisterDto,
+                response: {
+                    201: {
+                        description: 'Empty response',
+                        type: 'null',
+                    },
+                },
             },
         },
         userRegisterController.execute.bind(userRegisterController)
     );
 
-    fastify.route({
-        method: 'GET',
-        url: '/refresh',
-        handler: userRefreshController.execute.bind(userRefreshController),
-    });
+    registerRoute(
+        fastify,
+        {
+            method: 'GET',
+            url: '/refresh',
+            preValidation: authMiddleware,
+            schema: {
+                response: {
+                    200: UserTokenDto,
+                },
+            },
+        },
+        userRefreshController.execute.bind(userRefreshController)
+    );
 
     done();
 };
