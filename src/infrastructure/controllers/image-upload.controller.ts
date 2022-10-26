@@ -9,7 +9,7 @@ import { TitleVO } from '../../domain/value-objects/title.vo';
 import { UrlSlugVO } from '../../domain/value-objects/url-slug.vo';
 import { UuidVO } from '../../domain/value-objects/uuid.vo';
 import { ContainerSymbols } from '../../symbols';
-import { ImageUploadDtoType } from '../dtos/image-upload.dto';
+import { ImageUploadDto } from '../dtos/image-upload.dto';
 
 const sizeOf = promisify(imageSize);
 
@@ -21,7 +21,7 @@ export class ImageUploadController {
     ) {}
 
     async execute(
-        req: FastifyRequest<{ Body: ImageUploadDtoType }>,
+        req: FastifyRequest<{ Body: ImageUploadDto }>,
         res: FastifyReply
     ): Promise<void> {
         const { body, title, slug, file } = req;

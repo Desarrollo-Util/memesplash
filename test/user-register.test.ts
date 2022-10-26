@@ -5,58 +5,76 @@ import { app, setupTests } from './utils/setup-tests';
 
 setupTests(test);
 
-const testUserA = generateRandomUser();
-const testUserB = generateRandomUser();
+const resgisterEndponit = '/users/register';
 
-test.serial('Register succesfully', async (t) => {
+test('Register succesfully', async (t) => {
+    const user = generateRandomUser();
     const response = await app.inject({
         method: 'POST',
-        url: '/users/register',
-        payload: testUserA,
+        url: resgisterEndponit,
+        payload: user,
     });
 
     expectStatusCode(t, 201, response);
 });
 
-test.serial('Register failed - Duplicated ID', async (t) => {
-    const user = {
-        ...testUserB,
-        id: testUserA.id,
+test('Register failed - Duplicated ID', async (t) => {
+    const userOk = generateRandomUser();
+    const userFail = {
+        ...generateRandomUser(),
+        id: userOk.id,
     };
 
-    const response = await app.inject({
+    const responseOk = await app.inject({
         method: 'POST',
-        url: '/users/register',
-        payload: user,
+        url: resgisterEndponit,
+        payload: userOk,
     });
 
-    expectStatusCode(t, 409, response);
+    expectStatusCode(t, 201, responseOk);
+
+    const responseFail = await app.inject({
+        method: 'POST',
+        url: resgisterEndponit,
+        payload: userFail,
+    });
+
+    expectStatusCode(t, 409, responseFail);
 });
 
-test.serial('Register failed - Duplicated email', async (t) => {
-    const user = {
-        ...testUserB,
-        email: testUserA.email,
+test('Register failed - Duplicated email', async (t) => {
+    const userOk = generateRandomUser();
+    const userFail = {
+        ...generateRandomUser(),
+        email: userOk.email,
     };
 
-    const response = await app.inject({
+    const responseOk = await app.inject({
         method: 'POST',
-        url: '/users/register',
-        payload: user,
+        url: resgisterEndponit,
+        payload: userOk,
     });
 
-    expectStatusCode(t, 409, response);
+    expectStatusCode(t, 201, responseOk);
+
+    const responseFail = await app.inject({
+        method: 'POST',
+        url: resgisterEndponit,
+        payload: userFail,
+    });
+
+    expectStatusCode(t, 409, responseFail);
 });
 
 test('Register failed - Invalid ID format', async (t) => {
     const user = {
-        ...testUserA,
+        ...generateRandomUser(),
         id: 'invalid-uuid',
     };
 
     const response = await app.inject({
         method: 'POST',
-        url: '/users/register',
+        url: resgisterEndponit,
         payload: user,
     });
 
@@ -65,13 +83,13 @@ test('Register failed - Invalid ID format', async (t) => {
 
 test('Register failed - Invalid name format', async (t) => {
     const user = {
-        ...testUserA,
+        ...generateRandomUser(),
         name: 'name-with-./*',
     };
 
     const response = await app.inject({
         method: 'POST',
-        url: '/users/register',
+        url: resgisterEndponit,
         payload: user,
     });
 
@@ -80,13 +98,13 @@ test('Register failed - Invalid name format', async (t) => {
 
 test('Register failed - Invalid email format', async (t) => {
     const user = {
-        ...testUserA,
+        ...generateRandomUser(),
         email: 'emailatemail.com',
     };
 
     const response = await app.inject({
         method: 'POST',
-        url: '/users/register',
+        url: resgisterEndponit,
         payload: user,
     });
 
@@ -95,13 +113,13 @@ test('Register failed - Invalid email format', async (t) => {
 
 test('Register failed - Invalid password format', async (t) => {
     const user = {
-        ...testUserA,
+        ...generateRandomUser(),
         password: '1234',
     };
 
     const response = await app.inject({
         method: 'POST',
-        url: '/users/register',
+        url: resgisterEndponit,
         payload: user,
     });
 
@@ -115,7 +133,7 @@ test('Register failed - Invalid password format', async (t) => {
 
 //     const response = await app.inject({
 //         method: 'POST',
-//         url: '/users/register',
+//         url: resgisterEndponit,
 //         payload: user,
 //     });
 
@@ -130,7 +148,7 @@ test('Register failed - Invalid password format', async (t) => {
 
 //     const response = await app.inject({
 //         method: 'POST',
-//         url: '/users/register',
+//         url: resgisterEndponit,
 //         payload: user,
 //     });
 

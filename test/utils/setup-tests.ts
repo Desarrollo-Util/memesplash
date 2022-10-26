@@ -39,6 +39,7 @@ export const setupTests = (test: TestFn<unknown>) => {
         if (mongo)
             await mongo.stop({
                 doCleanup: true,
+                force: true,
             });
     });
 };

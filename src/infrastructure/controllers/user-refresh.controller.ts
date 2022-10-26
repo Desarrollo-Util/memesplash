@@ -1,7 +1,7 @@
 import { FastifyReply, FastifyRequest } from 'fastify';
 import { injectable } from 'inversify';
 import { SignOptions } from 'jsonwebtoken';
-import { UserTokenDtoType } from '../dtos/user-token.dto';
+import { UserTokenDto } from '../dtos/user-token.dto';
 import { signAsync } from '../services/jwt.service';
 
 @injectable()
@@ -9,7 +9,7 @@ export class UserRefreshController {
     async execute(
         _req: FastifyRequest,
         res: FastifyReply
-    ): Promise<UserTokenDtoType> {
+    ): Promise<UserTokenDto> {
         const { userId } = res;
 
         const payload = { id: userId };

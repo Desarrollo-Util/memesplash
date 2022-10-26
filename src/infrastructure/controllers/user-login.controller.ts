@@ -5,8 +5,8 @@ import { UserLoginUseCase } from '../../application/use-cases/user-login.usecase
 import { EmailVO } from '../../domain/value-objects/email.vo';
 import { PlainPasswordVO } from '../../domain/value-objects/plain-password.vo';
 import { ContainerSymbols } from '../../symbols';
-import { UserLoginDtoType } from '../dtos/user-login.dto';
-import { UserTokenDtoType } from '../dtos/user-token.dto';
+import { UserLoginDto } from '../dtos/user-login.dto';
+import { UserTokenDto } from '../dtos/user-token.dto';
 import { signAsync } from '../services/jwt.service';
 
 @injectable()
@@ -17,9 +17,9 @@ export class UserLoginController {
     ) {}
 
     async execute(
-        { body }: FastifyRequest<{ Body: UserLoginDtoType }>,
+        { body }: FastifyRequest<{ Body: UserLoginDto }>,
         _res: FastifyReply
-    ): Promise<UserTokenDtoType> {
+    ): Promise<UserTokenDto> {
         const id = await this.userLoginUseCase.execute(
             new EmailVO(body.email),
             new PlainPasswordVO(body.password)

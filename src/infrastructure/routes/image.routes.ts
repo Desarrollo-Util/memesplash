@@ -5,10 +5,11 @@ import { ImageFindAllController } from '../controllers/image-find-all.controller
 import { ImageFindByOwnerController } from '../controllers/image-find-by-owner.controller';
 import { ImageUploadController } from '../controllers/image-upload.controller';
 import { ImageUploadDto } from '../dtos/image-upload.dto';
-import { ImageArrayDto } from '../dtos/image.dto';
+import { ImageDto } from '../dtos/image.dto';
 import { authMiddleware } from '../middlewares/auth.middleware';
 import { multerImageUpload } from '../utils/multer';
 import { registerRoute } from '../utils/route';
+import { getArraySchema, getSchema } from '../utils/typebox-decorators';
 
 const imageUploadController = container.get<ImageUploadController>(
     ContainerSymbols.ImageUploadController
@@ -31,7 +32,7 @@ export const ImageRoutes = (
             method: 'POST',
             url: '/upload',
             schema: {
-                body: ImageUploadDto,
+                body: getSchema(ImageUploadDto),
                 response: {
                     201: {
                         description: 'Empty response',
@@ -57,7 +58,7 @@ export const ImageRoutes = (
                     },
                 ],
                 response: {
-                    200: ImageArrayDto,
+                    200: getArraySchema(ImageDto),
                 },
             },
         },
@@ -71,7 +72,7 @@ export const ImageRoutes = (
             url: '/',
             schema: {
                 response: {
-                    200: ImageArrayDto,
+                    200: getArraySchema(ImageDto),
                 },
             },
         },

@@ -1,16 +1,16 @@
-import { Static, Type } from '@sinclair/typebox';
+import { Type } from '@sinclair/typebox';
+import { Dto, Prop } from '../utils/typebox-decorators';
 
 // TODO: Validations
-export const UserRegisterDto = Type.Object(
-    {
-        id: Type.String(),
-        name: Type.String(),
-        email: Type.String(),
-        password: Type.String(),
-    },
-    {
-        additionalProperties: false,
-    }
-);
 
-export type UserRegisterDtoType = Static<typeof UserRegisterDto>;
+@Dto({ additionalProperties: false })
+export class UserRegisterDto {
+    @Prop(Type.String())
+    id!: string;
+    @Prop(Type.String())
+    name!: string;
+    @Prop(Type.String())
+    email!: string;
+    @Prop(Type.String())
+    password!: string;
+}

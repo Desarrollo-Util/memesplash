@@ -3,7 +3,7 @@ import { inject, injectable } from 'inversify';
 import { ImageFindByOwnerUseCase } from '../../application/use-cases/image-find-by-owner.usecase';
 import { UuidVO } from '../../domain/value-objects/uuid.vo';
 import { ContainerSymbols } from '../../symbols';
-import { ImageDtoType } from '../dtos/image.dto';
+import { ImageDto } from '../dtos/image.dto';
 
 @injectable()
 export class ImageFindByOwnerController {
@@ -15,7 +15,7 @@ export class ImageFindByOwnerController {
     async execute(
         _req: FastifyRequest,
         res: FastifyReply
-    ): Promise<ImageDtoType[]> {
+    ): Promise<ImageDto[]> {
         const userId = new UuidVO(res.userId);
 
         const userImages = await this.imageFindByOwnerUseCase.execute(userId);

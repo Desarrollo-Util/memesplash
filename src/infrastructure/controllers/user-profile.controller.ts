@@ -3,7 +3,7 @@ import { inject, injectable } from 'inversify';
 import { UserProfileUseCase } from '../../application/use-cases/user-profile.usecase';
 import { UuidVO } from '../../domain/value-objects/uuid.vo';
 import { ContainerSymbols } from '../../symbols';
-import { UserDtoType } from '../dtos/user.dto';
+import { UserDto } from '../dtos/user.dto';
 
 @injectable()
 export class UserProfileController {
@@ -12,10 +12,7 @@ export class UserProfileController {
         private userProfileUseCase: UserProfileUseCase
     ) {}
 
-    async execute(
-        _req: FastifyRequest,
-        res: FastifyReply
-    ): Promise<UserDtoType> {
+    async execute(_req: FastifyRequest, res: FastifyReply): Promise<UserDto> {
         const user = await this.userProfileUseCase.execute(
             new UuidVO(res.userId)
         );

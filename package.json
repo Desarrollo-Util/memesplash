@@ -52,6 +52,7 @@
         "uuid-random": "1.3.2"
     },
     "ava": {
+        "timeout": "2m",
         "extensions": [
             "ts"
         ],

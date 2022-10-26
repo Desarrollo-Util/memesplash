@@ -1,7 +1,7 @@
 import { inject, injectable } from 'inversify';
 import { ImageFindAllUseCase } from '../../application/use-cases/image-find-all.usecase';
 import { ContainerSymbols } from '../../symbols';
-import { ImageDtoType } from '../dtos/image.dto';
+import { ImageDto } from '../dtos/image.dto';
 
 @injectable()
 export class ImageFindAllController {
@@ -10,7 +10,7 @@ export class ImageFindAllController {
         private imageFindAllUseCase: ImageFindAllUseCase
     ) {}
 
-    async execute(): Promise<ImageDtoType[]> {
+    async execute(): Promise<ImageDto[]> {
         const images = await this.imageFindAllUseCase.execute();
 
         return images.map((image) => ({

@@ -6,7 +6,7 @@ import { NameVO } from '../../domain/value-objects/name.vo';
 import { PasswordVO } from '../../domain/value-objects/password.vo';
 import { UuidVO } from '../../domain/value-objects/uuid.vo';
 import { ContainerSymbols } from '../../symbols';
-import { UserRegisterDtoType } from '../dtos/user-register.dto';
+import { UserRegisterDto } from '../dtos/user-register.dto';
 
 @injectable()
 export class UserRegisterController {
@@ -16,7 +16,7 @@ export class UserRegisterController {
     ) {}
 
     async execute(
-        req: FastifyRequest<{ Body: UserRegisterDtoType }>,
+        req: FastifyRequest<{ Body: UserRegisterDto }>,
         res: FastifyReply
     ): Promise<void> {
         const { id, name, email, password } = req.body;

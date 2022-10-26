@@ -1,11 +1,8 @@
-import { Type, type Static } from '@sinclair/typebox';
+import { Type } from '@sinclair/typebox';
+import { Dto, Prop } from '../utils/typebox-decorators';
 
-// TODO: Validations
-export const ImageUploadDto = Type.Object(
-    {
-        id: Type.String(),
-    },
-    { additionalProperties: false }
-);
-
-export type ImageUploadDtoType = Static<typeof ImageUploadDto>;
+@Dto({ additionalProperties: false })
+export class ImageUploadDto {
+    @Prop(Type.String())
+    id!: string;
+}

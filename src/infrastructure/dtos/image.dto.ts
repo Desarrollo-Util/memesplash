@@ -1,21 +1,25 @@
-import { Type, type Static } from '@sinclair/typebox';
+import { Type } from '@sinclair/typebox';
+import { Dto, Prop } from '../utils/typebox-decorators';
 
 // TODO: Validations
-export const ImageDto = Type.Object(
-    {
-        id: Type.String(),
-        ownerId: Type.String(),
-        title: Type.String(),
-        slug: Type.String(),
-        format: Type.String(),
-        size: Type.Integer(),
-        height: Type.Integer(),
-        width: Type.Integer(),
-        createdAt: Type.Integer(),
-    },
-    { additionalProperties: false }
-);
-
-export const ImageArrayDto = Type.Array(ImageDto);
-
-export type ImageDtoType = Static<typeof ImageDto>;
+@Dto({ additionalProperties: false })
+export class ImageDto {
+    @Prop(Type.String())
+    id!: string;
+    @Prop(Type.String())
+    ownerId!: string;
+    @Prop(Type.String())
+    title!: string;
+    @Prop(Type.String())
+    slug!: string;
+    @Prop(Type.String())
+    format!: string;
+    @Prop(Type.Integer())
+    size!: number;
+    @Prop(Type.Integer())
+    height!: number;
+    @Prop(Type.Integer())
+    width!: number;
+    @Prop(Type.Integer())
+    createdAt!: number;
+}
