@@ -1,4 +1,7 @@
+import { TypeBoxTypeProvider } from '@fastify/type-provider-typebox';
 import { ObjectOptions, Static, TSchema, Type } from '@sinclair/typebox';
+import { FastifyBaseLogger, FastifyInstance } from 'fastify';
+import { IncomingMessage, Server, ServerResponse } from 'http';
 
 export type ClassType<T> = {
     new (...args: any[]): T;
@@ -22,10 +25,37 @@ export const Dto = (options?: ObjectOptions) => (target: ClassType<any>) => {
         }),
         {}
     );
+
+    const withIdoptions: ObjectOptions = {
+        $id: target.name,
+        ...(options || {}),
+    };
+    let baseClass = Object.getPrototypeOf(target);
+    const schemas = [];
+    while (baseClass && baseClass !== Object && baseClass.name) {
+        const schemaDef = Reflect.getMetadata(
+            TYPEBOX_METADATA_SCHEMA,
+            baseClass
+        );
+        if (!schemaDef) throw new Error('Not Dto class' + baseClass.name);
+        schemas.unshift(schemaDef);
+        baseClass = Object.getPrototypeOf(baseClass);
+    }
+
     Reflect.deleteMetadata(TYPEBOX_METADATA_STORAGE, target);
     Reflect.defineMetadata(
         TYPEBOX_METADATA_SCHEMA,
-        Type.Object(schemaDef, options),
+        schemas.length > 0
+            ? Type.Intersect(
+                  [
+                      ...schemas,
+                      Type.Object(schemaDef, {
+                          $id: withIdoptions.$id || target.name,
+                      }),
+                  ],
+                  withIdoptions
+              )
+            : Type.Object(schemaDef, withIdoptions),
         target
     );
     return target;
@@ -56,23 +86,28 @@ export const Prop =
         );
     };
 
-export const getSchema = <T>(type: ClassType<T>): TSchema => {
-    const schema = Reflect.getMetadata(TYPEBOX_METADATA_SCHEMA, type);
-    if (!schema) throw new Error(`${type.constructor.name} not DTO provided`);
-    let baseClass = Object.getPrototypeOf(type);
-    const schemas = [schema];
-    while (baseClass && baseClass !== Object && baseClass.name) {
-        const schemaDef = Reflect.getMetadata(
-            TYPEBOX_METADATA_SCHEMA,
-            baseClass
-        );
-        if (!schemaDef) throw new Error('Not Dto class' + baseClass.name);
-        schemas.unshift(schemaDef);
-        baseClass = Object.getPrototypeOf(baseClass);
-    }
-    return schemas.length > 1 ? Type.Intersect(schemas) : schemas[0];
+type SchemaFromClass<T> = {
+    static: T;
+} & TSchema;
+
+export const getSchema = <T>(type: ClassType<T>): SchemaFromClass<T> =>
+    Reflect.getMetadata(TYPEBOX_METADATA_SCHEMA, type);
+
+export const getRef = <T>(type: ClassType<T>, refArray: boolean = false) => {
+    const baseSchema = getSchema(type);
+    if (!refArray) return { $ref: baseSchema.$id + '#' };
+    return Type.Array(Type.Ref(baseSchema));
 };
 
-export const getArraySchema = <T>(type: ClassType<T>): unknown => {
-    return Type.Array(getSchema(type));
+export const registerSchemas = (
+    app: FastifyInstance<
+        Server<typeof IncomingMessage, typeof ServerResponse>,
+        IncomingMessage,
+        ServerResponse<IncomingMessage>,
+        FastifyBaseLogger,
+        TypeBoxTypeProvider
+    >,
+    ...schemas: TSchema[]
+) => {
+    schemas.forEach((s) => app.addSchema(s));
 };

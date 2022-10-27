@@ -12,7 +12,7 @@ import { UserTokenDto } from '../dtos/user-token.dto';
 import { UserDto } from '../dtos/user.dto';
 import { authMiddleware } from '../middlewares/auth.middleware';
 import { registerRoute } from '../utils/route';
-import { getSchema } from '../utils/typebox-decorators';
+import { getRef } from '../utils/typebox-decorators';
 
 const userLoginController = container.get<UserLoginController>(
     ContainerSymbols.UserLoginController
@@ -40,7 +40,7 @@ export const UserRoutes = (
             preValidation: authMiddleware,
             schema: {
                 response: {
-                    200: getSchema(UserDto),
+                    200: getRef(UserDto),
                 },
             },
         },
@@ -53,9 +53,9 @@ export const UserRoutes = (
             method: 'POST',
             url: '/login',
             schema: {
-                body: getSchema(UserLoginDto),
+                body: getRef(UserLoginDto),
                 response: {
-                    200: getSchema(UserTokenDto),
+                    200: getRef(UserTokenDto),
                 },
             },
         },
@@ -68,7 +68,7 @@ export const UserRoutes = (
             method: 'POST',
             url: '/register',
             schema: {
-                body: getSchema(UserRegisterDto),
+                body: getRef(UserRegisterDto),
                 response: {
                     201: {
                         description: 'Empty response',
@@ -88,7 +88,7 @@ export const UserRoutes = (
             preValidation: authMiddleware,
             schema: {
                 response: {
-                    200: getSchema(UserTokenDto),
+                    200: getRef(UserTokenDto),
                 },
             },
         },

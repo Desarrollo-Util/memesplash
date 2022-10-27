@@ -9,7 +9,7 @@ import { ImageDto } from '../dtos/image.dto';
 import { authMiddleware } from '../middlewares/auth.middleware';
 import { multerImageUpload } from '../utils/multer';
 import { registerRoute } from '../utils/route';
-import { getArraySchema, getSchema } from '../utils/typebox-decorators';
+import { getRef } from '../utils/typebox-decorators';
 
 const imageUploadController = container.get<ImageUploadController>(
     ContainerSymbols.ImageUploadController
@@ -32,7 +32,7 @@ export const ImageRoutes = (
             method: 'POST',
             url: '/upload',
             schema: {
-                body: getSchema(ImageUploadDto),
+                body: getRef(ImageUploadDto),
                 response: {
                     201: {
                         description: 'Empty response',
@@ -58,7 +58,7 @@ export const ImageRoutes = (
                     },
                 ],
                 response: {
-                    200: getArraySchema(ImageDto),
+                    200: getRef(ImageDto, true),
                 },
             },
         },
@@ -72,7 +72,7 @@ export const ImageRoutes = (
             url: '/',
             schema: {
                 response: {
-                    200: getArraySchema(ImageDto),
+                    200: getRef(ImageDto, true),
                 },
             },
         },
