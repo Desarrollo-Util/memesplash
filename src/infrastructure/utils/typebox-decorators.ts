@@ -1,4 +1,4 @@
-import { ObjectOptions, TSchema, Type } from '@sinclair/typebox';
+import { ObjectOptions, Static, TSchema, Type } from '@sinclair/typebox';
 
 export type ClassType<T> = {
     new (...args: any[]): T;
@@ -33,7 +33,10 @@ export const Dto = (options?: ObjectOptions) => (target: ClassType<any>) => {
 
 export const Prop =
     <K extends TSchema>(type: K) =>
-    (target: any, propertyKey: string) => {
+    <T extends Record<S, Static<K>>, S extends string>(
+        target: T,
+        propertyKey: S
+    ) => {
         const props: PropDef[] =
             Reflect.getMetadata(TYPEBOX_METADATA_STORAGE, target.constructor) ||
             [];
