@@ -1,5 +1,4 @@
 import { ObjectOptions, TSchema, Type } from '@sinclair/typebox';
-import { FastifySchema } from 'fastify';
 
 export type ClassType<T> = {
     new (...args: any[]): T;
@@ -54,14 +53,12 @@ export const Prop =
         );
     };
 
-export const getSchema = <T>(type: ClassType<T>): unknown => {
+export const getSchema = <T>(type: ClassType<T>): TSchema => {
     const schema = Reflect.getMetadata(TYPEBOX_METADATA_SCHEMA, type);
     if (!schema) throw new Error(`${type.constructor.name} not DTO provided`);
     return schema;
 };
 
 export const getArraySchema = <T>(type: ClassType<T>): unknown => {
-    const schema = Reflect.getMetadata(TYPEBOX_METADATA_SCHEMA, type);
-    if (!schema) throw new Error(`${type.constructor.name} not DTO provided`);
-    return Type.Array(schema);
+    return Type.Array(getSchema(type));
 };
