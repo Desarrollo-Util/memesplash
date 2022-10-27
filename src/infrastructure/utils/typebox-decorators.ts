@@ -33,7 +33,7 @@ export const Dto = (options?: ObjectOptions) => (target: ClassType<any>) => {
 
 export const Prop =
     <K extends TSchema>(type: K) =>
-    <T extends Record<S, Static<K>>, S extends string>(
+    <T extends Partial<Record<S, Static<K>>>, S extends string>(
         target: T,
         propertyKey: S
     ) => {
