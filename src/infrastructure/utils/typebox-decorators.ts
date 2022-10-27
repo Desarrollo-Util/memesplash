@@ -59,7 +59,18 @@ export const Prop =
 export const getSchema = <T>(type: ClassType<T>): TSchema => {
     const schema = Reflect.getMetadata(TYPEBOX_METADATA_SCHEMA, type);
     if (!schema) throw new Error(`${type.constructor.name} not DTO provided`);
-    return schema;
+    let baseClass = Object.getPrototypeOf(type);
+    const schemas = [schema];
+    while (baseClass && baseClass !== Object && baseClass.name) {
+        const schemaDef = Reflect.getMetadata(
+            TYPEBOX_METADATA_SCHEMA,
+            baseClass
+        );
+        if (!schemaDef) throw new Error('Not Dto class' + baseClass.name);
+        schemas.unshift(schemaDef);
+        baseClass = Object.getPrototypeOf(baseClass);
+    }
+    return schemas.length > 1 ? Type.Intersect(schemas) : schemas[0];
 };
 
 export const getArraySchema = <T>(type: ClassType<T>): unknown => {
