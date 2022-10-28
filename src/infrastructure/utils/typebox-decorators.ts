@@ -95,8 +95,7 @@ export const getSchema = <T>(type: ClassType<T>): SchemaFromClass<T> =>
 
 export const getRef = <T>(type: ClassType<T>, refArray: boolean = false) => {
     const baseSchema = getSchema(type);
-    if (!refArray) return Type.Ref(baseSchema);
-    return Type.Array(Type.Ref(baseSchema));
+    return refArray ? Type.Array(Type.Ref(baseSchema)) : Type.Ref(baseSchema);
 };
 
 export const registerSchemas = (
