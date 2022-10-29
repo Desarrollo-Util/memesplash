@@ -15,7 +15,7 @@ import { ImageRoutes } from './infrastructure/routes/image.routes';
 import { UserRoutes } from './infrastructure/routes/user.routes';
 import {
     getSchema,
-    registerSchemas,
+    registerDtos,
 } from './infrastructure/utils/typebox-decorators';
 
 const startApp = async () => {
@@ -24,14 +24,14 @@ const startApp = async () => {
     app.register(cors);
     app.register(multerContentParser);
 
-    registerSchemas(
+    registerDtos(
         app,
-        getSchema(ImageUploadDto),
-        getSchema(ImageDto),
-        getSchema(UserDto),
-        getSchema(UserLoginDto),
-        getSchema(UserTokenDto),
-        getSchema(UserRegisterDto)
+        ImageUploadDto,
+        ImageDto,
+        UserDto,
+        UserLoginDto,
+        UserTokenDto,
+        UserRegisterDto
     );
 
     const swaggerOptions: FastifyDynamicSwaggerOptions = {
@@ -55,6 +55,7 @@ const startApp = async () => {
         uiConfig: {
             syntaxHighlight: {
                 activate: true,
+                theme: 'monokai-vibrant',
             },
         },
     };

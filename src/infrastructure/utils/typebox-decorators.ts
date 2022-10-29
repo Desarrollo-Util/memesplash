@@ -2,10 +2,7 @@ import { TypeBoxTypeProvider } from '@fastify/type-provider-typebox';
 import { ObjectOptions, Static, TSchema, Type } from '@sinclair/typebox';
 import { FastifyBaseLogger, FastifyInstance } from 'fastify';
 import { IncomingMessage, Server, ServerResponse } from 'http';
-
-export type ClassType<T> = {
-    new (...args: any[]): T;
-};
+import { ClassType } from './utility.types';
 
 const TYPEBOX_METADATA_STORAGE = Symbol('TYPEBOX_METADATA_STORAGE');
 const TYPEBOX_METADATA_SCHEMA = Symbol('TYPEBOX_METADATA_SCHEMA');
@@ -47,12 +44,7 @@ export const Dto = (options?: ObjectOptions) => (target: ClassType<any>) => {
         TYPEBOX_METADATA_SCHEMA,
         schemas.length > 0
             ? Type.Intersect(
-                  [
-                      ...schemas,
-                      Type.Object(schemaDef, {
-                          $id: withIdoptions.$id || target.name,
-                      }),
-                  ],
+                  [...schemas, Type.Object(schemaDef)],
                   withIdoptions
               )
             : Type.Object(schemaDef, withIdoptions),
@@ -98,7 +90,7 @@ export const getRef = <T>(type: ClassType<T>, refArray: boolean = false) => {
     return refArray ? Type.Array(Type.Ref(baseSchema)) : Type.Ref(baseSchema);
 };
 
-export const registerSchemas = (
+export const registerDtos = (
     app: FastifyInstance<
         Server<typeof IncomingMessage, typeof ServerResponse>,
         IncomingMessage,
@@ -106,7 +98,7 @@ export const registerSchemas = (
         FastifyBaseLogger,
         TypeBoxTypeProvider
     >,
-    ...schemas: TSchema[]
+    ...schemas: ClassType<unknown>[]
 ) => {
-    schemas.forEach((s) => app.addSchema(s));
+    schemas.forEach((s) => app.addSchema(getSchema(s)));
 };
