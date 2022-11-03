@@ -1,7 +1,9 @@
 import { FastifyReply, FastifyRequest } from 'fastify';
 import { inject, injectable } from 'inversify';
 import { ImageFindByOwnerUseCase } from '../../application/use-cases/image-find-by-owner.usecase';
+import { UuidVO } from '../../domain/value-objects/uuid.vo';
 import { ContainerSymbols } from '../../symbols';
+import { ImageDto } from '../dtos/image.dto';
 
 @injectable()
 export class ImageFindByOwnerController {
@@ -10,11 +12,24 @@ export class ImageFindByOwnerController {
         private imageFindByOwnerUseCase: ImageFindByOwnerUseCase
     ) {}
 
-    async execute(_req: FastifyRequest, res: FastifyReply) {
-        const { userId } = res;
+    async execute(
+        _req: FastifyRequest,
+        res: FastifyReply
+    ): Promise<ImageDto[]> {
+        const userId = new UuidVO(res.userId);
 
         const userImages = await this.imageFindByOwnerUseCase.execute(userId);
 
-        return res.send(userImages);
+        return userImages.map((image) => ({
+            id: image.id.value,
+            ownerId: image.ownerId.value,
+            title: image.title.value,
+            slug: image.slug.value,
+            format: image.format.value,
+            size: image.size.value,
+            height: image.height.value,
+            width: image.width.value,
+            createdAt: image.createdAt.value.getTime(),
+        }));
     }
 }

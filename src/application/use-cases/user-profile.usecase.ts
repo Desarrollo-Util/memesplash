@@ -1,5 +1,5 @@
 import { inject, injectable } from 'inversify';
-import { VOFormatException } from '../../domain/errors/vo-format.exception';
+import { UserModel } from '../../domain/models/user.model';
 import { IUserRepository } from '../../domain/repository/user-repository.interface';
 import { UuidVO } from '../../domain/value-objects/uuid.vo';
 import { ContainerSymbols } from '../../symbols';
@@ -12,27 +12,11 @@ export class UserProfileUseCase {
         private userRepository: IUserRepository
     ) {}
 
-    async execute(id: string) {
-        try {
-            const userId = new UuidVO(id);
+    async execute(userId: UuidVO): Promise<UserModel> {
+        const existingUser = await this.userRepository.findById(userId);
 
-            const existingUser = await this.userRepository.findById(userId);
+        if (!existingUser) throw new ApplicationUnauthorizedException();
 
-            if (!existingUser) {
-                throw new ApplicationUnauthorizedException();
-            }
-
-            return {
-                id: existingUser.id.value,
-                name: existingUser.name.value,
-                email: existingUser.email.value,
-                profilePic: existingUser.profilePic?.value,
-            };
-        } catch (err) {
-            if (err instanceof VOFormatException)
-                throw new ApplicationUnauthorizedException();
-
-            throw err;
-        }
+        return existingUser;
     }
 }

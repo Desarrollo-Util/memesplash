@@ -1,7 +1,7 @@
-import { FastifyReply, FastifyRequest } from 'fastify';
 import { inject, injectable } from 'inversify';
 import { ImageFindAllUseCase } from '../../application/use-cases/image-find-all.usecase';
 import { ContainerSymbols } from '../../symbols';
+import { ImageDto } from '../dtos/image.dto';
 
 @injectable()
 export class ImageFindAllController {
@@ -10,9 +10,19 @@ export class ImageFindAllController {
         private imageFindAllUseCase: ImageFindAllUseCase
     ) {}
 
-    async execute(_req: FastifyRequest, res: FastifyReply) {
+    async execute(): Promise<ImageDto[]> {
         const images = await this.imageFindAllUseCase.execute();
 
-        return res.send(images);
+        return images.map((image) => ({
+            id: image.id.value,
+            ownerId: image.ownerId.value,
+            title: image.title.value,
+            slug: image.slug.value,
+            format: image.format.value,
+            size: image.size.value,
+            height: image.height.value,
+            width: image.width.value,
+            createdAt: image.createdAt.value.getTime(),
+        }));
     }
 }
