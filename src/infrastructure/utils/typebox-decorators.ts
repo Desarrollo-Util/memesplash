@@ -1,5 +1,11 @@
 import { TypeBoxTypeProvider } from '@fastify/type-provider-typebox';
-import { ObjectOptions, Static, TSchema, Type } from '@sinclair/typebox';
+import {
+    ObjectOptions,
+    Static,
+    TOptional,
+    TSchema,
+    Type,
+} from '@sinclair/typebox';
 import { FastifyBaseLogger, FastifyInstance } from 'fastify';
 import { IncomingMessage, Server, ServerResponse } from 'http';
 import { ClassType } from './utility.types';
@@ -53,9 +59,20 @@ export const Dto = (options?: ObjectOptions) => (target: ClassType<any>) => {
     return target;
 };
 
+export type BuildMinPropNeeded<
+    K extends TSchema,
+    S extends string
+> = K extends TOptional<any>
+    ? {
+          [P in S]?: Static<K>;
+      }
+    : {
+          [P in S]: Static<K>;
+      };
+
 export const Prop =
     <K extends TSchema>(type: K) =>
-    <T extends Partial<Record<S, Static<K>>>, S extends string>(
+    <T extends BuildMinPropNeeded<K, S>, S extends string>(
         target: T,
         propertyKey: S
     ) => {
