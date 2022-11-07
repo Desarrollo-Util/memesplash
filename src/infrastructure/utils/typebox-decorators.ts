@@ -62,9 +62,9 @@ export const Dto = (options?: ObjectOptions) => (target: ClassType<any>) => {
 export type BuildMinPropNeeded<
     K extends TSchema,
     S extends string
-> = K extends TOptional<any>
+> = K extends TOptional<infer U>
     ? {
-          [P in S]?: Static<K>;
+          [P in S]?: Static<U>;
       }
     : {
           [P in S]: Static<K>;
