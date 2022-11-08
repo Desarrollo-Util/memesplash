@@ -24,7 +24,7 @@ export class ImageUploadController {
         req: FastifyRequest<{ Body: ImageUploadDto }>,
         res: FastifyReply
     ): Promise<void> {
-        const { body, title, slug, file } = req;
+        const { body, slug, file } = req;
 
         if (!file) throw new Error();
 
@@ -35,7 +35,7 @@ export class ImageUploadController {
         await this.imageUploadUseCase.execute(
             new UuidVO(body.id),
             new UuidVO(res.userId),
-            new TitleVO(title),
+            new TitleVO(body.title),
             new UrlSlugVO(slug),
             new ImageFormatVO(file.mimetype),
             new IntGtZeroVO(file.size),

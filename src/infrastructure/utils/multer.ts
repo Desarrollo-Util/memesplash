@@ -13,8 +13,7 @@ const storage = multer.diskStorage({
         const filename = createdAt + '-' + file.originalname;
         const extName = extname(IMAGE_PATH);
 
-        req.slug = 'images';
-        req.title = filename.replace(extName, '');
+        req.slug = filename.replace(extName, '');
 
         cb(null, filename);
     },

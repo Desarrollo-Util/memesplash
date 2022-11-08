@@ -26,7 +26,6 @@ export class ImageUploadUseCase {
         height: IntGtZeroVO,
         width: IntGtZeroVO
     ): Promise<void> {
-        // TODO: Esto qué?
         const createdAt = new PreviousDateVO(new Date());
 
         const image = new ImageModel(

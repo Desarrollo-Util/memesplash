@@ -5,4 +5,6 @@ import { Dto, Prop } from '../utils/typebox-decorators';
 export class ImageUploadDto {
     @Prop(Type.String())
     id!: string;
+    @Prop(Type.String())
+    title!: string;
 }

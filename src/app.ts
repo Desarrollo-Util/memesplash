@@ -1,9 +1,11 @@
 import cors from '@fastify/cors';
+import fastifyStaticPlugin from '@fastify/static';
 import fastifySwagger, { FastifyDynamicSwaggerOptions } from '@fastify/swagger';
 import fastifySwaggerUi, { FastifySwaggerUiOptions } from '@fastify/swagger-ui';
 import { TypeBoxTypeProvider } from '@fastify/type-provider-typebox';
 import fastify from 'fastify';
 import { contentParser as multerContentParser } from 'fastify-multer';
+import { join } from 'path';
 import { ImageUploadDto } from './infrastructure/dtos/image-upload.dto';
 import { ImageDto } from './infrastructure/dtos/image.dto';
 import { UserLoginDto } from './infrastructure/dtos/user-login.dto';
@@ -14,8 +16,7 @@ import { errorMiddleware } from './infrastructure/middlewares/error.middleware';
 import { ImageRoutes } from './infrastructure/routes/image.routes';
 import { UserRoutes } from './infrastructure/routes/user.routes';
 import {
-    getSchema,
-    registerDtos,
+    registerDtos
 } from './infrastructure/utils/typebox-decorators';
 
 const startApp = async () => {
@@ -23,6 +24,9 @@ const startApp = async () => {
 
     app.register(cors);
     app.register(multerContentParser);
+    app.register(fastifyStaticPlugin, {
+        root: join(__dirname, '../','images'),
+    })
 
     registerDtos(
         app,
