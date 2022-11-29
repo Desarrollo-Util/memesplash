@@ -11,6 +11,17 @@
         "forceConsistentCasingInFileNames": true,
         "moduleResolution": "node",
         "experimentalDecorators": true,
-        "emitDecoratorMetadata": true
+        "emitDecoratorMetadata": true,
+        "baseUrl": "./",
+        "paths": {
+            "@user/*": ["src/user/*"],
+            "@image/*": ["src/image/*"],
+            "@shared/*": ["src/shared/*"]
+        },
+        "plugins": [
+            {
+                "transform": "typescript-transform-paths"
+            }
+        ]
     }
 }

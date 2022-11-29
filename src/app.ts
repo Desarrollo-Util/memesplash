@@ -3,21 +3,21 @@ import fastifyStaticPlugin from '@fastify/static';
 import fastifySwagger, { FastifyDynamicSwaggerOptions } from '@fastify/swagger';
 import fastifySwaggerUi, { FastifySwaggerUiOptions } from '@fastify/swagger-ui';
 import { TypeBoxTypeProvider } from '@fastify/type-provider-typebox';
+import { ImageUploadDto } from '@image/infrastructure/dtos/image-upload.dto';
+import { ImageDto } from '@image/infrastructure/dtos/image.dto';
+import { ImageRoutes } from '@image/infrastructure/routes/image.routes';
+import { errorMiddleware } from '@shared/infrastructure/middlewares/error.middleware';
+import {
+    registerDtos
+} from '@shared/infrastructure/utils/typebox-decorators';
+import { UserLoginDto } from '@user/infrastructure/dtos/user-login.dto';
+import { UserRegisterDto } from '@user/infrastructure/dtos/user-register.dto';
+import { UserTokenDto } from '@user/infrastructure/dtos/user-token.dto';
+import { UserDto } from '@user/infrastructure/dtos/user.dto';
+import { UserRoutes } from '@user/infrastructure/routes/user.routes';
 import fastify from 'fastify';
 import { contentParser as multerContentParser } from 'fastify-multer';
 import { join } from 'path';
-import { ImageUploadDto } from './infrastructure/dtos/image-upload.dto';
-import { ImageDto } from './infrastructure/dtos/image.dto';
-import { UserLoginDto } from './infrastructure/dtos/user-login.dto';
-import { UserRegisterDto } from './infrastructure/dtos/user-register.dto';
-import { UserTokenDto } from './infrastructure/dtos/user-token.dto';
-import { UserDto } from './infrastructure/dtos/user.dto';
-import { errorMiddleware } from './infrastructure/middlewares/error.middleware';
-import { ImageRoutes } from './infrastructure/routes/image.routes';
-import { UserRoutes } from './infrastructure/routes/user.routes';
-import {
-    registerDtos
-} from './infrastructure/utils/typebox-decorators';
 
 const startApp = async () => {
     const app = fastify().withTypeProvider<TypeBoxTypeProvider>();
