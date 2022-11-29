@@ -4,7 +4,7 @@ import { extname, resolve } from 'path';
 import { ImageFormats } from '../../domain/constants/image-formats.enum';
 import { InvalidMimetypeFormatException } from '../errors/invalid-mimetype.exception';
 
-const IMAGE_PATH = resolve(__dirname, '../../../images');
+const IMAGE_PATH = resolve(__dirname, '../../../../images');
 
 const storage = multer.diskStorage({
     destination: IMAGE_PATH,
