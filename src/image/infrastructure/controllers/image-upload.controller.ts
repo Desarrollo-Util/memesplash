@@ -32,7 +32,6 @@ export class ImageUploadController {
         const dimensions = await sizeOf(image.path as string);
 
         if (!dimensions) throw new Error();
-        console.log(image.size);
 
         await this.imageUploadUseCase.execute(
             new UuidVO(id),
