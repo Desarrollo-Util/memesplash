@@ -34,6 +34,11 @@ export const ImageRoutes = (
             schema: {
                 tags: ['Image'],
                 consumes: ['multipart/form-data'],
+                security: [
+                    {
+                        Bearer: [''],
+                    },
+                ],
                 body: getRef(ImageUploadDto),
                 response: {
                     201: {

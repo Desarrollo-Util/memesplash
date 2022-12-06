@@ -14,9 +14,8 @@ const storage = multer.diskStorage({
         const createdAt = Date.now();
         const filename = createdAt + '-' + file.originalname;
         const extName = extname(IMAGE_PATH);
-        file.slug = filename.replace(extName, '');
-        file.destination = filename;
         file.path = resolve(IMAGE_PATH, filename);
+        file.slug = filename.replace(extName, '');
         Object.defineProperty(req.body, file.fieldname, {
             get() {
                 return req.file;
@@ -42,6 +41,6 @@ export const multerImageUpload = multer({
 
 export const removeImageOnError = async (err: Error, req: FastifyRequest) => {
     const image: File = (req.body as any).image;
-    await unlink(resolve(IMAGE_PATH, image.destination as string));
+    image.path && (await unlink(image.path));
     throw err;
 };
