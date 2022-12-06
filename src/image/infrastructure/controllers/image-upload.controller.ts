@@ -1,3 +1,4 @@
+import { ImageFormats } from '@image/domain/constants/image-formats.enum';
 import { ImageFormatVO } from '@image/domain/value-objects/image-format.vo';
 import { IntGtZeroVO } from '@shared/domain/value-objects/int-gt-zero.vo';
 import { TitleVO } from '@shared/domain/value-objects/title.vo';
@@ -24,21 +25,22 @@ export class ImageUploadController {
         req: FastifyRequest<{ Body: ImageUploadDto }>,
         res: FastifyReply
     ): Promise<void> {
-        const { body, slug, file } = req;
+        const { image, title, id } = req.body;
 
-        if (!file) throw new Error();
+        if (!image) throw new Error();
 
-        const dimensions = await sizeOf(file.path);
+        const dimensions = await sizeOf(image.path as string);
 
         if (!dimensions) throw new Error();
+        console.log(image.size);
 
         await this.imageUploadUseCase.execute(
-            new UuidVO(body.id),
+            new UuidVO(id),
             new UuidVO(res.userId),
-            new TitleVO(body.title),
-            new UrlSlugVO(slug),
-            new ImageFormatVO(file.mimetype),
-            new IntGtZeroVO(file.size),
+            new TitleVO(title),
+            new UrlSlugVO(image.slug),
+            new ImageFormatVO(image.mimetype as ImageFormats),
+            new IntGtZeroVO(image.size || 0),
             new IntGtZeroVO(dimensions.height || 0),
             new IntGtZeroVO(dimensions.width || 0)
         );

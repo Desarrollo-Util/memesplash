@@ -1,5 +1,7 @@
 import { FastifyRequest } from 'fastify';
 import multer from 'fastify-multer';
+import { File } from 'fastify-multer/lib/interfaces';
+import { unlink } from 'fs/promises';
 import { extname, resolve } from 'path';
 import { ImageFormats } from '../../domain/constants/image-formats.enum';
 import { InvalidMimetypeFormatException } from '../errors/invalid-mimetype.exception';
@@ -12,9 +14,15 @@ const storage = multer.diskStorage({
         const createdAt = Date.now();
         const filename = createdAt + '-' + file.originalname;
         const extName = extname(IMAGE_PATH);
-
-        req.slug = filename.replace(extName, '');
-
+        file.slug = filename.replace(extName, '');
+        file.destination = filename;
+        file.path = resolve(IMAGE_PATH, filename);
+        (req.body as any)[file.fieldname] = file;
+        Object.defineProperty(req.body, file.fieldname, {
+            get() {
+                return req.file;
+            },
+        });
         cb(null, filename);
     },
 });
@@ -32,3 +40,9 @@ export const multerImageUpload = multer({
         else cb(null, true);
     },
 });
+
+export const removeImageOnError = async (err: Error, req: FastifyRequest) => {
+    const image: File = (req.body as any).image;
+    await unlink(resolve(IMAGE_PATH, image.destination as string));
+    throw err;
+};

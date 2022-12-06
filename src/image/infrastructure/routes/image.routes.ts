@@ -9,7 +9,7 @@ import { ImageFindByOwnerController } from '../controllers/image-find-by-owner.c
 import { ImageUploadController } from '../controllers/image-upload.controller';
 import { ImageUploadDto } from '../dtos/image-upload.dto';
 import { ImageDto } from '../dtos/image.dto';
-import { multerImageUpload } from '../utils/multer';
+import { multerImageUpload, removeImageOnError } from '../utils/multer';
 
 const imageUploadController = container.get<ImageUploadController>(
     ContainerSymbols.ImageUploadController
@@ -32,6 +32,8 @@ export const ImageRoutes = (
             method: 'POST',
             url: '/upload',
             schema: {
+                tags: ['Image'],
+                consumes: ['multipart/form-data'],
                 body: getRef(ImageUploadDto),
                 response: {
                     201: {
@@ -41,6 +43,7 @@ export const ImageRoutes = (
                 },
             },
             preValidation: [authMiddleware, multerImageUpload.single('image')],
+            errorHandler: removeImageOnError,
         },
         imageUploadController.execute.bind(imageUploadController)
     );
@@ -52,6 +55,7 @@ export const ImageRoutes = (
             url: '/my-images',
             preValidation: authMiddleware,
             schema: {
+                tags: ['Image'],
                 security: [
                     {
                         Bearer: [''],
@@ -71,6 +75,7 @@ export const ImageRoutes = (
             method: 'GET',
             url: '/',
             schema: {
+                tags: ['Image'],
                 response: {
                     200: getRef(ImageDto, true),
                 },

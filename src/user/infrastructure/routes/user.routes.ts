@@ -39,6 +39,7 @@ export const UserRoutes = (
             url: '/profile',
             preValidation: authMiddleware,
             schema: {
+                tags: ['User'],
                 response: {
                     200: getRef(UserDto),
                 },
@@ -53,6 +54,7 @@ export const UserRoutes = (
             method: 'POST',
             url: '/login',
             schema: {
+                tags: ['User'],
                 body: getRef(UserLoginDto),
                 response: {
                     200: getRef(UserTokenDto),
@@ -68,6 +70,7 @@ export const UserRoutes = (
             method: 'POST',
             url: '/register',
             schema: {
+                tags: ['User'],
                 body: getRef(UserRegisterDto),
                 response: {
                     201: {
@@ -87,6 +90,7 @@ export const UserRoutes = (
             url: '/refresh',
             preValidation: authMiddleware,
             schema: {
+                tags: ['User'],
                 response: {
                     200: getRef(UserTokenDto),
                 },

@@ -14,3 +14,9 @@ declare module 'fastify' {
         userId: string;
     }
 }
+
+declare module 'fastify-multer/lib/interfaces' {
+    interface File {
+        slug: string;
+    }
+}
