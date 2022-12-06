@@ -17,7 +17,6 @@ const storage = multer.diskStorage({
         file.slug = filename.replace(extName, '');
         file.destination = filename;
         file.path = resolve(IMAGE_PATH, filename);
-        (req.body as any)[file.fieldname] = file;
         Object.defineProperty(req.body, file.fieldname, {
             get() {
                 return req.file;
